@@ -12,7 +12,7 @@ const Jobs = () => {
     });
   }, []);
   return (
-    <div className="grid grid-cols-2 w-[80%] mx-auto gap-8">
+    <div className="grid lg:grid-cols-2 grid-cols-1 w-[80%] relative mx-auto gap-8">
       {jobs
         ?.sort((a, b) =>
           a.createdOn > b.createdOn ? 1 : b.createdOn > a.createdOn ? -1 : 0

@@ -3,56 +3,37 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const JobPage = () => {
-  const [job, setJob] = useState();
+  const [job, setJob] = useState("");
   const params = useParams();
   // console.log(params);
-  const [url, setUrl] = useState("");
-  setUrl(`http://localhost:8000/api/jobs/search/${params.id}`);
+  const url = `http://localhost:8000/api/jobs/search/${params.id}`;
   useEffect(() => {
-    console.log("useEffect called");
-    const getJob = async () => {
-      try {
-        const res = await axios.get(url);
-        setJob(res.data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    getJob();
+    console.log("hgcgfdfhtfhf");
+    axios.get(url).then((response) => {
+      setJob(response.data);
+      // console.log(response.data);
+    });
   }, [url]);
-
-  // console.log(job);
-  // const job = {
-  //   _id: "63f4e209dbfa1eda7207c26d",
-  //   farmerId: "raghav@ncuindia.edu",
-  //   jobName: "Cultivating",
-  //   jobDesc: "yuguygifghisudhsiuhvigsdviugsdvi",
-  //   expiredAt: "2023-04-09T15:23:53.998Z",
-  //   land: 5,
-  //   completionDays: 15,
-  //   amount: 5000,
-  //   coordinates: {
-  //     lat: 65.56,
-  //     long: 65.56,
-  //   },
-  //   jobOptions: "both",
-  //   state: "Haryana",
-  //   district: "Jhajhar",
-  //   createdOn: "2023-02-21T15:23:53.999Z",
-  //   __v: 0,
-  // };
-
+  const dt1 = new Date(Date.now());
+  // const dt2 = new Date(Date(job.createdOn));
+  const dt2 = new Date(job.createdOn);
+  console.log(dt2);
+  var diffDate = Math.abs(dt1.getTime() - dt2.getTime());
+  console.log(Math.round(diffDate / (3600000 * 24)));
+  diffDate = Math.round(diffDate / (3600000 * 24));
+  console.log(job);
+  var cl = "button";
   return (
     <div className="w-[85%] h-full relative mx-auto my-16">
       {/* Heading div */}
       <div className="shadow-md rounded-md p-5 flex justify-between items-center">
         <div className="flex items-center justify-around">
           <div className="bg-gray-300 p-2 mx-4">
-            <span className="material-symbols-outlined">work</span>
+            <span className="material-symbols-outlined text-6xl">work</span>
           </div>
           <div className="mx-4">
-            <h2>{job.jobName}</h2>
-            <span>{job.farmerId}</span>
+            <h2 className="text-2xl">{job.jobName}</h2>
+            <span className="text-xl">{job.farmerId}</span>
           </div>
 
           <div className="mx-4">
@@ -60,19 +41,92 @@ const JobPage = () => {
             <span className="text-[#C0C0C0] text-4xl">{job.amount}</span>
           </div>
           <div>
-            <span>Address</span>
+            <span>Location: </span>
+            <span>
+              {/* <a
+                href={`http://maps.google.com/maps?q=${job.coordinates?.lat},${job.coordinates?.long}`}
+              >
+                url
+              </a> */}
+            </span>
           </div>
         </div>
         <button className="button">Apply For this job</button>
       </div>
       {/* Job overview */}
-      <h1>Job overview</h1>
-
-      <div>
+      <div className="flex lg:flex-row flex-col justify-around ml-2 mt-10">
         {/* Overview */}
-        <div>Overview</div>
+        <div className="bg-[#fafafa] lg:w-[40%] w-[85%] px-5 py-2">
+          <h1 className="m-1 font-bold text-xl text-gray-400">Overview</h1>
+          <div className="flex items-center my-2">
+            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
+              calendar_month
+            </span>
+            <div className="flex flex-col">
+              <span>Date Posted</span>{" "}
+              <time>
+                Posted on:{" "}
+                {diffDate === 1 ? `${diffDate} day` : `${diffDate} days`} ago
+              </time>
+            </div>
+          </div>
+          <div className="flex items-center my-2">
+            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
+              schedule
+            </span>
+            <div className="flex flex-col">
+              <span>Expiry Date</span>
+              <span>Expired in: {job.expiredAt?.slice(0, 10)}</span>
+            </div>
+          </div>
+          <div className="flex items-center my-2">
+            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
+              map
+            </span>
+            <div className="flex flex-col">
+              <span>Address </span>
+              <span>
+                {job.state}, {job.district}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center my-2">
+            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
+              work
+            </span>
+            <div className="flex flex-col">
+              <span>For </span>
+              <span>
+                {job.jobOptions === "both"
+                  ? "Labour and Contractor"
+                  : `${job.jobOptions}`}
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center my-2">
+            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
+              timer
+            </span>
+            <div className="flex flex-col">
+              <span>Completion Days </span>
+              <span>{job.completionDays} days</span>
+            </div>
+          </div>
+          <div className="flex items-center my-2">
+            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
+              landscape
+            </span>
+            <div className="flex flex-col">
+              <span>Land </span>
+              <span>{job.land} acres</span>
+            </div>
+          </div>
+        </div>
         {/* Description */}
-        <div>Description</div>
+        <div className="bg-[#fafafa] lg:w-[40%] w-[85%] overflow-auto px-5 py-2">
+          <h1 className="m-1 font-bold text-xl text-gray-400">Description</h1>
+          <span className="m-1">{job.jobDesc}</span>
+        </div>
       </div>
     </div>
   );
