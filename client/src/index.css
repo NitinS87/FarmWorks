@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button {
+  position: relative;
+  background-color: #26ae61;
+  padding: 0.5rem 3rem;
+  color: white;
+  font-size: 18px;
+  box-shadow: 5px 5px 7px 0px #00003f;
+  z-index: 0;
+}
+
+.button::before {
+  content: "";
+  background-color: #1f1f1f;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: 0.8s;
+  z-index: -1;
+}
+
+button:hover::before {
+  transform: scaleX(1);
+}
