@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
+import { LoginContext } from "../context/UserContext";
 const Navbar = () => {
-  const user = true;
+  const { user, setUser, userType, setUserType } = useContext(LoginContext);
   return (
     <div className="w-full shadow-md text-lg">
       <nav className="w-[85%] h-[20%] flex mx-auto justify-between md:justify-start">
@@ -12,13 +13,16 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex md:w-full justify-between items-center mx-3 w-1/3">
-          {user ? (
+          {user.name ? (
             <div className="hidden md:flex border-x border-x-gray-500 w-[90%] h-[95%] items-center">
-              <div className="text-base py-2 px-3">
-                <Link to="/create" className="hover:text-[#5FBC7C]">
-                  Create a Job
-                </Link>
-              </div>
+              {userType === "labour" ? null : (
+                <div className="text-base py-2 px-3">
+                  <Link to="/create" className="hover:text-[#5FBC7C]">
+                    Create a Job
+                  </Link>
+                </div>
+              )}
+
               <div className="text-base py-2 px-3">
                 <Link to="/userJobs" className="hover:text-[#5FBC7C]">
                   Show my Jobs
@@ -45,11 +49,15 @@ const Navbar = () => {
             </div>
           )}
 
-          {user ? (
-            <Link to="/profile" className="mr-16">
-              <span className="material-symbols-outlined text-2xl lg:text-4xl p-1 bg-gray-200 rounded-full">
+          {user.name ? (
+            <Link
+              to="/account"
+              className="mr-16 flex items-center justify-evenly mx-2"
+            >
+              <span className="material-symbols-outlined text-2xl lg:text-4xl p-1 rounded-full">
                 account_circle
               </span>
+              <span className="text-base">{user.name}</span>
             </Link>
           ) : (
             <div className="flex mx-2">

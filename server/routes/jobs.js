@@ -17,21 +17,16 @@ router.get("/", async (req, res) => {
 });
 
 //CREATE
-router.post("/create", verifyToken, async (req, res) => {
-  var someDate = new Date();
-  someDate.setDate(someDate.getSeconds() + 15);
+router.post("/create", async (req, res) => {
   const jobs = new Jobs({
     farmerId: req.body.farmerId,
     jobName: req.body.jobName,
     jobDesc: req.body.jobDesc,
-    expiredAt: someDate,
     land: req.body.land,
     completionDays: req.body.completionDays,
     amount: req.body.amount,
     coordinates: req.body.coordinates,
     jobOptions: req.body.jobOptions,
-    state: req.body.state,
-    district: req.body.district,
   });
 
   try {
@@ -44,7 +39,7 @@ router.post("/create", verifyToken, async (req, res) => {
 });
 
 //GET FARMER JOBS
-router.get("/find/:farmerId", verifyToken, async (req, res) => {
+router.get("/find/:farmerId", async (req, res) => {
   try {
     const jobs = await Jobs.find({ farmerId: req.params.farmerId });
     if (!jobs) {
@@ -135,7 +130,7 @@ router.delete("/delete/:id", verifyToken, async (req, res) => {
   try {
     const temp = await Jobs.findByIdAndDelete(req.params.id);
     if (!temp) {
-      res.status(202).json("job does not exist");
+      res.status(202).json("Job does not exist");
     } else {
       res.status(200).json("Job has been deleted..");
     }

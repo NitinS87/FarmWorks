@@ -27,7 +27,7 @@ const LabourSchema = new mongoose.Schema(
       min: 6,
       max: 1024,
     },
-    district: {
+    city: {
       type: String,
       required: true,
       min: 6,

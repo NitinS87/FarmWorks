@@ -18,17 +18,13 @@ const JobsSchema = new mongoose.mongoose.Schema({
     required: true,
     min: 6,
   },
-  // status: {
-  //   type: String,
-
-  // }
+  status: {
+    type: String,
+    default: "hiring",
+  },
   createdOn: {
     type: Date,
     default: Date.now,
-    required: true,
-  },
-  expiredAt: {
-    type: Date,
     required: true,
   },
   land: {
@@ -55,16 +51,6 @@ const JobsSchema = new mongoose.mongoose.Schema({
     required: true,
   },
   jobOptions: {
-    type: String,
-    default: "",
-    required: true,
-  },
-  state: {
-    type: String,
-    default: "",
-    required: true,
-  },
-  district: {
     type: String,
     default: "",
     required: true,

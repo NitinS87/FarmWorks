@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { LoginContext } from "./../context/UserContext";
 
 const Jobs = ({ url }) => {
+  // const { user, setUser } = useContext(LoginContext);
   const [jobs, setJobs] = useState();
   useEffect(() => {
     axios.get(url).then((response) => {
@@ -10,6 +12,8 @@ const Jobs = ({ url }) => {
       // console.log(response.data);
     });
   }, []);
+
+  // console.log(user);
   return (
     <div className="w-[80%] relative mx-auto mb-16">
       <h1 className="text-3xl text-gray-500 p-2">Available Jobs</h1>
@@ -21,7 +25,7 @@ const Jobs = ({ url }) => {
           .slice(0, 6)
           ?.map((job, jobIdx) => (
             <div
-              className="h-[100px] mx-auto flex justify-evenly items-center border-l-4 border-l-[#5FBC7C] border px-8 gap-10"
+              className="lg:h-[100px] h-full mx-auto flex flex-col lg:flex-row justify-evenly items-center border-l-4 border-l-[#5FBC7C] border px-8 gap-10"
               key={jobIdx}
             >
               <div className="bg-gray-300 p-2">

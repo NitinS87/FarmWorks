@@ -11,31 +11,36 @@ router.post("/register", async (req, res) => {
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, salt),
     state: req.body.state,
-    district: req.body.district,
+    city: req.body.city,
     phoneNumber: req.body.phoneNumber,
+    aadharNumber: req.body.aadharNumber,
   });
 
   try {
     const savedLabour = await labour.save();
+    // console.log(savedLabour);
     res.status(201).json(savedLabour);
-    console.log(savedLabour);
   } catch (err) {
     res.status(500).json(err);
+    console.log(err);
   }
 });
 
 //LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const labour = await Labour.findOne({ email: req.body.email });
-    !labour && res.status(401).json("Wrong Credentials");
+    const user = await Labour.findOne({ email: req.body.email });
+    if (!user) {
+      !user && res.status(401).json("Wrong Credentials");
+    } else {
+      const isMatch = await bcrypt.compare(req.body.password, user.password);
+      if (!isMatch) return res.status(400).json("invalid id or pass");
+      const type = "labour";
+      const token = jwt.sign({ user, type }, process.env.JWT_SECRET);
+      delete user.password;
 
-    const isMatch = await bcrypt.compare(req.body.password, labour.password);
-    if (!isMatch) return res.status(400).json("invalid id or pass");
-
-    const token = jwt.sign({ id: labour._id }, process.env.JWT_SECRET);
-    delete labour.password;
-    res.status(200).json({ token, labour });
+      res.status(200).json({ token, user, type });
+    }
   } catch (err) {
     res.status(500).json(err);
   }

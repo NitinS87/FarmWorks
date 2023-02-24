@@ -11,31 +11,34 @@ router.post("/register", async (req, res) => {
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, salt),
     state: req.body.state,
-    district: req.body.district,
+    city: req.body.city,
     phoneNumber: req.body.phoneNumber,
+    aadharNumber: req.body.aadharNumber,
   });
 
   try {
-    const savedFarmer = await farmer.save();
-    res.status(201).json(savedFarmer);
-    console.log(savedFarmer);
+    const user = await farmer.save();
+    // console.log(savedFarmer);
+    res.status(201).json(user);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json(err.message);
   }
 });
 
 //LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const farmer = await Farmer.findOne({ email: req.body.email });
-    !farmer && res.status(401).json("Wrong Credentials");
-
-    const isMatch = await bcrypt.compare(req.body.password, farmer.password);
-    if (!isMatch) return res.status(400).json("invalid id or pass");
-
-    const token = jwt.sign({ id: farmer._id }, process.env.JWT_SECRET);
-    delete farmer.password;
-    res.status(200).json({ token, farmer });
+    const user = await Farmer.findOne({ email: req.body.email });
+    if (!user) {
+      !user && res.status(401).json("Wrong Credentials");
+    } else {
+      const isMatch = await bcrypt.compare(req.body.password, user.password);
+      if (!isMatch) return res.status(400).json("invalid id or pass");
+      const type = "farmer";
+      const token = jwt.sign({ user, type }, process.env.JWT_SECRET);
+      delete user.password;
+      res.status(200).json({ token, user, type });
+    }
   } catch (err) {
     res.status(500).json(err);
   }

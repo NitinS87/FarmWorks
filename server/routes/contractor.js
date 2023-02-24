@@ -11,14 +11,15 @@ router.post("/register", async (req, res) => {
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, salt),
     state: req.body.state,
-    district: req.body.district,
+    city: req.body.city,
     phoneNumber: req.body.phoneNumber,
+    aadharNumber: req.body.aadharNumber,
   });
 
   try {
-    const savedContractor = await contractor.save();
-    res.status(201).json(savedContractor);
-    console.log(savedContractor);
+    const user = await contractor.save();
+    res.status(201).json(user);
+    // console.log(user);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -27,18 +28,17 @@ router.post("/register", async (req, res) => {
 //LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const contractor = await Contractor.findOne({ email: req.body.email });
-    !contractor && res.status(401).json("Wrong Credentials");
-
-    const isMatch = await bcrypt.compare(
-      req.body.password,
-      contractor.password
-    );
-    if (!isMatch) return res.status(400).json("invalid id or pass");
-
-    const token = jwt.sign({ id: contractor._id }, process.env.JWT_SECRET);
-    delete Contractor.password;
-    res.status(200).json({ token, contractor });
+    const user = await Contractor.findOne({ email: req.body.email });
+    if (!user) {
+      !user && res.status(401).json("Wrong Credentials");
+    } else {
+      const isMatch = await bcrypt.compare(req.body.password, user.password);
+      if (!isMatch) return res.status(400).json("invalid id or pass");
+      const token = jwt.sign({ user }, process.env.JWT_SECRET);
+      delete Contractor.password;
+      const type = "contractor";
+      res.status(200).json({ token, user, type });
+    }
   } catch (err) {
     res.status(500).json(err);
   }

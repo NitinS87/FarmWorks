@@ -67,13 +67,14 @@ function HeroBanner() {
       </div>
 
       {/* Left Arrow */}
-      <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 group-hover:bg-black/20 text-white cursor-pointer">
+      {/* Right Arrow */}
+      {/* <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 group-hover:bg-black/20 text-white cursor-pointer">
         <BsChevronCompactLeft size={30} onClick={prevSlide} />
       </div>
-      {/* Right Arrow */}
+      
       <div className="absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 group-hover:bg-black/20 text-white cursor-pointer">
         <BsChevronCompactRight size={30} onClick={nextSlide} />
-      </div>
+      </div> */}
 
       <div className="flex top-4 justify-center py-2">
         {slides.map((slide, slideIndex) => (
