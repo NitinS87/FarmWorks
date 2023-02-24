@@ -5,6 +5,7 @@ const cors = require("cors");
 const multer = require("multer");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 const farmerRoute = require("./routes/farmer.js");
 const contractorRoute = require("./routes/contractor.js");
@@ -18,7 +19,13 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000/",
+  })
+);
 
 //routes
 app.use("/api/farmer", farmerRoute);
@@ -28,7 +35,7 @@ app.use("/api/labour", labourRoute);
 
 //database connections
 const port = process.env.PORT || 8000;
-mongoose.set('strictQuery', true)
+mongoose.set("strictQuery", true);
 mongoose
   .connect(process.env.MONGOURL, {
     useNewUrlParser: true,
@@ -43,6 +50,6 @@ mongoose
     console.log("Could not connect to database" + err);
   });
 
-  app.get("/", (req, res)=>{
-    res.send("Hey!")
-  })
+app.get("/", (req, res) => {
+  res.send("Hey!");
+});

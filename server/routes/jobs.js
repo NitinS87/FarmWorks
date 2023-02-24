@@ -126,7 +126,7 @@ router.put("/update/:id", verifyToken, async (req, res) => {
 //   }
 // });
 //DELETE
-router.delete("/delete/:id", verifyToken, async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const temp = await Jobs.findByIdAndDelete(req.params.id);
     if (!temp) {

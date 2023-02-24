@@ -37,10 +37,23 @@ router.post("/login", async (req, res) => {
       const type = "farmer";
       const token = jwt.sign({ user, type }, process.env.JWT_SECRET);
       delete user.password;
-      res.status(200).json({ token, user, type });
+      res.cookie("token", token).status(200).json({ token, user, type });
     }
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+router.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, {}, async (err, userData) => {
+      if (err) throw err;
+      const userDoc = await Farmer.findById(userData.id);
+      res.json(userDoc);
+    });
+  } else {
+    res.json(null);
   }
 });
 

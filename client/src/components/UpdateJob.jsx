@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../context/UserContext";
 
-const CreateJob = () => {
+const UpdateJob = () => {
   const { user, setUser } = useContext(LoginContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -61,7 +61,6 @@ const CreateJob = () => {
         console.log(err.response.data);
       });
   };
-
   return (
     <div>
       {user.email ? (
@@ -231,4 +230,4 @@ const CreateJob = () => {
   );
 };
 
-export default CreateJob;
+export default UpdateJob;

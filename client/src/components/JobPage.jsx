@@ -41,7 +41,7 @@ const JobPage = () => {
 
     console.log("delete");
     axios
-      .get(`http://localhost:8000/api/jobs/delete/${params.id}`)
+      .delete(`http://localhost:8000/api/jobs/delete/${params.id}`)
       .then((response) => {
         console.log(response.data);
         setSuccess(response.data);
@@ -76,12 +76,7 @@ const JobPage = () => {
         </div>
         {job.farmerId === user.email ? (
           <div className="flex gap-4">
-            <Link
-              to={{
-                pathname: "/register",
-                state: "update",
-              }}
-            >
+            <Link to={`/update/${params.id}`}>
               <button className="button">Update</button>
             </Link>
             <button className="button !bg-red-500" onClick={handleDelete}>
