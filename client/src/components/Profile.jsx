@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import profilePic from "../assets/profile.jpg";
 import tractor from "../assets/tractor.jpg";
-import { LoginContext } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const { user, setUser, userType, setUserType } = useContext(LoginContext);
+  const { user, setUser, userType, setUserType } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogout = (e) => {

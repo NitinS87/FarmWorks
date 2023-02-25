@@ -7,14 +7,14 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { LoginContext } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 
 const JobPage = () => {
   const token = localStorage.getItem("Authorization");
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const { user, setUser } = useContext(LoginContext);
+  const { user, setUser } = useContext(UserContext);
   const [job, setJob] = useState("");
   const params = useParams();
   // console.log(params);
@@ -76,7 +76,7 @@ const JobPage = () => {
             <span className="text-[#C0C0C0] text-4xl">{job.amount}</span>
           </div>
         </div>
-        {job.farmerId === user.email ? (
+        {job.farmerId === user?.email ? (
           <div className="flex gap-4">
             <Link to={`/update/${job._id}`}>
               <button className="button">Update</button>
@@ -167,10 +167,10 @@ const JobPage = () => {
             </a>
           </div>
 
-          {user.phoneNumber ? (
+          {user?.phoneNumber ? (
             <div className="flex items-center my-2">
               <a
-                href={`tel:${user.phoneNumber}`}
+                href={`tel:${user?.phoneNumber}`}
                 className="flex items-center hover:scale-105 ease-in-out duration-300"
               >
                 <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
@@ -178,7 +178,7 @@ const JobPage = () => {
                 </span>
                 <div className="flex flex-col">
                   <span className="text-gray-500">Phone Number </span>
-                  <span>{user.phoneNumber}</span>
+                  <span>{user?.phoneNumber}</span>
                 </div>
               </a>
             </div>

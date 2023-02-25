@@ -1,33 +1,14 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
-// const StateContext = createContext();
+export const UserContext = createContext(null);
 
-// const initialState = {
-//   userProfile: false,
-// };
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [userType, setUserType] = useState(null);
 
-// export const UserContext = ({ children }) => {
-//   const [currentUser, setCurrentUser] = useState(null);
-
-//   const handleUserLogout = () => {
-//     setCurrentUser(null);
-//     localStorage.removeItem("token");
-//   };
-
-//   return (
-//     <StateContext.Provider
-//       value={{
-//         initialState,
-//         currentUser,
-//         setCurrentUser,
-//         handleUserLogout,
-//       }}
-//     >
-//       {children}
-//     </StateContext.Provider>
-//   );
-// };
-
-// export const useStateContext = () => useContext(StateContext);
-
-export const LoginContext = createContext({});
+  return (
+    <UserContext.Provider value={{ user, setUser, userType, setUserType }}>
+      {children}
+    </UserContext.Provider>
+  );
+};

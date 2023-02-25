@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import CreateJob from "./components/CreateJob";
@@ -11,50 +11,41 @@ import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import UpdateJob from "./components/UpdateJob";
-import { LoginContext } from "./context/UserContext";
+import { UserContext, UserProvider } from "./context/UserContext";
 
 function App() {
-  const [user, setUser] = useState("");
-  const [userType, setUserType] = useState("");
+  const { user, setUser, setUserType } = useContext(UserContext);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("User"));
-    if (userData) setUser(userData);
+    // console.log(localStorage.getItem("User"));
+    if (userData != null) setUser(userData);
     // console.log(userData);
     const type = JSON.parse(localStorage.getItem("Type"));
+    // console.log(localStorage.getItem("Type"));
     // console.log(type);
-    if (type) setUser(userType);
+    if (type != null) setUserType(type);
   }, []);
   return (
-    <LoginContext.Provider value={{ user, setUser, userType, setUserType }}>
-      <div className="min-w-full min-h-screen overflow-hidden">
-        <Navbar />
-        <Routes>
-          <Route path="/" exact element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/jobs/:id" element={<JobPage />} />
-          {user?.email ? <Route path="/account" element={<Profile />} /> : null}
-          {user?.email ? (
-            <Route path="/create" element={<CreateJob />} />
-          ) : null}
-          {user?.email ? (
-            <Route path="/update/:id" element={<UpdateJob />} />
-          ) : null}
-          {user?.email ? (
-            <Route
-              path="/userJobs"
-              element={
-                <Jobs
-                  url={`http://localhost:8000/api/jobs/find/${user?.email}`}
-                />
-              }
-            />
-          ) : null}
-        </Routes>
-        <Footer />
-      </div>
-    </LoginContext.Provider>
+    <div className="min-w-full min-h-screen overflow-hidden">
+      <Navbar />
+      <Routes>
+        <Route path="/" exact element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/jobs/:id" element={<JobPage />} />
+        <Route path="/account" element={<Profile />} />
+        <Route path="/create" element={<CreateJob />} />
+        <Route path="/update/:id" element={<UpdateJob />} />
+        <Route
+          path="/userJobs"
+          element={
+            <Jobs url={`http://localhost:8000/api/jobs/find/${user?.email}`} />
+          }
+        />
+      </Routes>
+      <Footer />
+    </div>
   );
 }
 

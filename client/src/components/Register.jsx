@@ -3,10 +3,10 @@ import HeroBanner from "./HeroBanner";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Country, State, City } from "country-state-city";
-import { LoginContext } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 
 const Register = () => {
-  const { user, setUser } = useContext(LoginContext);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [name, setName] = useState("");

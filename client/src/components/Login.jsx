@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginContext } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import HeroBanner from "./HeroBanner";
 
 const Login = () => {
-  const { user, setUser, userType, setUserType } = useContext(LoginContext);
+  const { user, setUser, userType, setUserType } = useContext(UserContext);
 
   const navigate = useNavigate();
   const [error, setError] = useState("");

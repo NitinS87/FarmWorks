@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { LoginContext } from "./../context/UserContext";
+import { UserContext } from "./../context/UserContext";
 
 const Jobs = ({ url }) => {
   // const { user, setUser } = useContext(LoginContext);
