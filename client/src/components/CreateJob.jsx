@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import reqInstance from './../api';
+import reqInstance from "./../api";
 
 const CreateJob = () => {
   const { user } = useContext(UserContext);
@@ -186,6 +186,7 @@ const CreateJob = () => {
                       />
                     </span>
                   </span>
+                  <span class="material-symbols-outlined p-2 border mx-2">location_on</span>
                 </div>
               </div>
 

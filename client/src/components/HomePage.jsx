@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <div className="mx-auto relative flex flex-col gap-10">
       <HeroBanner />
-      <Jobs url="/api/jobs" />
+      <Jobs url="/api/jobs" sliceLast={6}/>
     </div>
   );
 };

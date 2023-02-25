@@ -56,30 +56,32 @@ app.get("/", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
-  const { token } = req.headers;
+  var { token } = req.headers;
   // console.log(token);
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, {}, async (err, userData) => {
       if (err) throw err;
       else {
+        console.log(userData);
         var user = null;
         var type = userData.type;
+        var email = userData.userEmail;
         if (userData.type === "farmer") {
-          const { name, email, state, city, phoneNumber, aadharNumber } =
-            await Farmer.findOne(userData.email);
+          var { name, email, state, city, phoneNumber, aadharNumber } =
+            await Farmer.findOne({email});
           user = { name, email, state, city, phoneNumber, aadharNumber };
         }
         if (userData.type === "labour") {
-          const { name, email, state, city, phoneNumber, aadharNumber } =
-            await Labour.findOne(userData.email);
+          var { name, email, state, city, phoneNumber, aadharNumber } =
+            await Labour.findOne({email});
           user = { name, email, state, city, phoneNumber, aadharNumber };
         }
         if (userData.type === "contractor") {
-          const { name, email, state, city, phoneNumber, aadharNumber } =
-            await Contractor.findOne(userData.email);
+          var { name, email, state, city, phoneNumber, aadharNumber } =
+            await Contractor.findOne({email});
           user = { name, email, state, city, phoneNumber, aadharNumber };
         }
-        // console.log({user, type});
+        console.log({ user, type });
         res.status(200).json({ user, type });
       }
     });

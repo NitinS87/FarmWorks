@@ -127,6 +127,8 @@ const Register = () => {
                 placeholder="Aadhar-Number"
                 value={aadharNumber}
                 required
+                title="Enter correct aadhar number"
+                pattern="[2-9][0-9]{11}"
                 onChange={(e) => setAadharNumber(e.target.value)}
               />
             </div>

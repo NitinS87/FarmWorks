@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import reqInstance from "./../api";
 
 const JobPage = () => {
-  const token = localStorage.getItem("Authorization");
+  var token = localStorage.getItem("Authorization");
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

@@ -29,7 +29,7 @@ function App() {
     // // console.log(localStorage.getItem("Type"));
     // // console.log(type);
     // if (type != null) setUserType(type);
-    const token = localStorage.getItem("Authorization");
+    var token = localStorage.getItem("Authorization");
     if (token)
       reqInstance.get("/profile").then((response) => {
         setUser(response.data.user);

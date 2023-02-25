@@ -28,15 +28,15 @@ router.post("/register", async (req, res) => {
 //LOGIN
 router.post("/login", async (req, res) => {
   try {
-    const user = await Farmer.findOne({ email: req.body.email });
+    var user = await Farmer.findOne({ email: req.body.email });
     if (!user) {
       !user && res.status(401).json("Wrong Credentials");
     } else {
-      const userEmail = user.email;
-      const isMatch = await bcrypt.compare(req.body.password, user.password);
+      var userEmail = user.email;
+      var isMatch = await bcrypt.compare(req.body.password, user.password);
       if (!isMatch) return res.status(400).json("invalid id or pass");
-      const type = "farmer";
-      const token = jwt.sign({ userEmail, type }, process.env.JWT_SECRET);
+      var type = "farmer";
+      var token = jwt.sign({ userEmail, type }, process.env.JWT_SECRET);
       delete user.password;
       res.status(200).json({ token, user, type });
     }

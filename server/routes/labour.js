@@ -33,10 +33,11 @@ router.post("/login", async (req, res) => {
     if (!user) {
       !user && res.status(401).json("Wrong Credentials");
     } else {
+      var userEmail = user.email;
       const isMatch = await bcrypt.compare(req.body.password, user.password);
       if (!isMatch) return res.status(400).json("invalid id or pass");
       const type = "labour";
-      const token = jwt.sign({ user, type }, process.env.JWT_SECRET);
+      const token = jwt.sign({ userEmail, type }, process.env.JWT_SECRET);
       delete user.password;
 
       res.status(200).json({ token, user, type });
