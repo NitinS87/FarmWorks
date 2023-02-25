@@ -125,7 +125,7 @@ const Register = () => {
               <span className=""></span>
               <input
                 className="w-full h-full outline-none  "
-                type="tel"
+                type="number"
                 placeholder="Aadhar-Number"
                 value={aadharNumber}
                 required

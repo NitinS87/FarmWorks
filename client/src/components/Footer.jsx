@@ -3,13 +3,13 @@ import logo from "../assets/logo.jpg";
 const Footer = () => {
   return (
     <div className="bg-[#282828] mt-5">
-      <div className=" w-[80%] mx-auto">
+      <div className=" w-[85%] mx-auto">
         <div>
           <img className="relative h-[5%] w-[5%] ml-8 top-5" src={logo} />
         </div>
         <div className="border mt-8 border-[#343434]"></div>
 
-        <div className="xl:w-[75%] flex justify-between flex-wrap gap-10 lg:gap-10 ml-16 mt-8 text-white">
+        <div className="xl:w-[75%] flex justify-evenly flex-wrap gap-10 lg:gap-10 mt-8 text-white">
           <div className="w-[20%] xl:w-fit">
             <h2 className="text-[16px] xl:py-[10px] py-[15px]">Company</h2>
             <ul className="text-[#73817E] flex flex-col gap-[10px] leading-[24px] font-[400]  ">

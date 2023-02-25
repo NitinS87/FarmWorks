@@ -29,8 +29,8 @@ const Login = () => {
         setUser(d.data.user);
         setUserType(type);
         localStorage.setItem("Authorization", d.data.token);
-        localStorage.setItem("User", d.data.user);
-        localStorage.setItem("Type", d.data.type);
+        localStorage.setItem("User", JSON.stringify(d.data.user));
+        localStorage.setItem("Type", JSON.stringify(d.data.type));
         navigate("/");
       })
       .catch((err) => {

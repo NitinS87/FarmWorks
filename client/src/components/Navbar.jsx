@@ -13,7 +13,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex md:w-full justify-between items-center mx-3 w-1/3">
-          {user.name ? (
+          {user?.name ? (
             <div className="hidden md:flex border-x border-x-gray-500 w-[90%] h-[95%] items-center">
               {userType === "labour" ? null : (
                 <div className="text-base py-2 px-3">
@@ -49,7 +49,7 @@ const Navbar = () => {
             </div>
           )}
 
-          {user.name ? (
+          {user?.name ? (
             <Link
               to="/account"
               className="mr-16 flex items-center justify-evenly mx-2"

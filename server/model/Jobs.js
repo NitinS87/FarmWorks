@@ -7,6 +7,10 @@ const JobsSchema = new mongoose.mongoose.Schema({
     min: 6,
     max: 255,
   },
+  phoneNumber: {
+    type: Number,
+    required: true,
+  },
   jobName: {
     type: String,
     required: true,

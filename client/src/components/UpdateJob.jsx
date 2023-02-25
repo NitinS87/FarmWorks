@@ -1,15 +1,17 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { LoginContext } from "../context/UserContext";
 
-const CreateJob = ({ op }) => {
+const UpdateJob = () => {
+  const [job, setJob] = useState("");
   const { user, setUser } = useContext(LoginContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [jobName, setJobName] = useState("");
   const [jobDesc, setJobDesc] = useState("");
   //   const [status, setStatus] = useState("");
+  const params = useParams();
   const [land, setLand] = useState("");
   const [completionDays, setCompletionDays] = useState("");
   const [amount, setAmount] = useState("");
@@ -18,17 +20,39 @@ const CreateJob = ({ op }) => {
   //   const [latitude, setLatitude] = useState("");
   //   const [longitude, setLongitude] = useState("");
 
-  const handleLocationCLicked = (e) => {
-    console.log("clicked");
-    navigator.geolocation.watchPosition(function (position) {
-      // console.log("Latitude is :", position.coords.latitude);
-      // console.log("Longitude is :", position.coords.longitude);
-      setCoordinates({
-        lat: position.coords.latitude,
-        long: position.coords.longitude,
-      });
+  navigator.geolocation.watchPosition(function (position) {
+    // console.log("Latitude is :", position.coords.latitude);
+    // console.log("Longitude is :", position.coords.longitude);
+    setCoordinates({
+      lat: position.coords.latitude,
+      long: position.coords.longitude,
     });
-  };
+  });
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/jobs/search/${params.id}`)
+      .then((response) => {
+        setJobName(response.data.jobName);
+        setJobDesc(response.data.jobDesc);
+        setLand(response.data.land);
+        setCompletionDays(response.data.completionDays);
+        setAmount(response.data.amount);
+        setCoordinates(response.data.coordinates);
+        setJobOptions(response.data.jobOptions);
+        setJob(response.data);
+      });
+  }, []);
+
+  console.log(
+    jobName,
+    jobDesc,
+    jobOptions,
+    amount,
+    completionDays,
+    land,
+    coordinates
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,7 +69,7 @@ const CreateJob = ({ op }) => {
 
     console.log(user);
     axios
-      .post(`http://localhost:8000/api/jobs/create`, {
+      .put(`http://localhost:8000/api/jobs/update/${job._id}`, {
         farmerId: user.email,
         jobName: jobName,
         jobDesc: jobDesc,
@@ -54,7 +78,6 @@ const CreateJob = ({ op }) => {
         amount: amount,
         coordinates: coordinates,
         jobOptions: jobOptions,
-        phoneNumber: user.phoneNumber,
       })
       .then((d) => {
         console.log(d.data);
@@ -77,7 +100,7 @@ const CreateJob = ({ op }) => {
             >
               <div className="flex-col items-center justify-center w-full">
                 <div className="mx-auto">
-                  <h1 className="text-3xl mt-5">Create a Job</h1>
+                  <h1 className="text-3xl mt-5">Update a Job</h1>
                 </div>
 
                 {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
@@ -154,10 +177,7 @@ const CreateJob = ({ op }) => {
                   />
                 </div>
 
-                <div
-                  className="p-2 mt-4 border rounded-md"
-                  onClick={handleLocationCLicked}
-                >
+                <div className="p-2 mt-4 border rounded-md">
                   <span>
                     Note: You are required to be at work location to create a
                     job
@@ -205,6 +225,7 @@ const CreateJob = ({ op }) => {
                       onChange={(e) => setJobOptions(e.target.value)}
                       className="border outline-none p-2 w-full"
                       placeholder="Select value"
+                      value={jobOptions}
                     >
                       <option value="DEFAULT" disabled>
                         Choose a option ...
@@ -224,7 +245,7 @@ const CreateJob = ({ op }) => {
 
                 <div className="flex items-center justify-start mt-4 rounded-md">
                   <button className="button shadow-sm" type="submit">
-                    Create
+                    Update
                   </button>
                 </div>
               </div>
@@ -238,4 +259,4 @@ const CreateJob = ({ op }) => {
   );
 };
 
-export default CreateJob;
+export default UpdateJob;

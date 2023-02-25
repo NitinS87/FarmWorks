@@ -10,6 +10,7 @@ import {
 import { LoginContext } from "../context/UserContext";
 
 const JobPage = () => {
+  const token = localStorage.getItem("Authorization");
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -32,19 +33,20 @@ const JobPage = () => {
   var diffDate = Math.abs(dt1.getTime() - dt2.getTime());
   // console.log(Math.round(diffDate / (3600000 * 24)));
   diffDate = Math.round(diffDate / (3600000 * 24));
-  console.log(job);
+  // console.log(job);
   // var cl = "button";
-  console.log(user);
+  // console.log(user);
 
   const handleDelete = (e) => {
     e.preventDefault();
 
     console.log("delete");
     axios
-      .get(`http://localhost:8000/api/jobs/delete/${params.id}`)
+      .delete(`http://localhost:8000/api/jobs/delete/${params.id}`, { token })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setSuccess(response.data);
+        navigate("/userJobs");
       })
       .catch((err) => {
         setError(err.response.data);
@@ -76,12 +78,7 @@ const JobPage = () => {
         </div>
         {job.farmerId === user.email ? (
           <div className="flex gap-4">
-            <Link
-              to={{
-                pathname: "/register",
-                state: "update",
-              }}
-            >
+            <Link to={`/update/${job._id}`}>
               <button className="button">Update</button>
             </Link>
             <button className="button !bg-red-500" onClick={handleDelete}>
@@ -109,15 +106,6 @@ const JobPage = () => {
                 Posted on:{" "}
                 {diffDate === 1 ? `${diffDate} day` : `${diffDate} days`} ago
               </time>
-            </div>
-          </div>
-          <div className="flex items-center my-2">
-            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-              schedule
-            </span>
-            <div className="flex flex-col">
-              <span className="text-gray-500">Expiry Date</span>
-              <span>Expired in: {job.expiredAt?.slice(0, 10)}</span>
             </div>
           </div>
           <div className="flex items-center my-2">

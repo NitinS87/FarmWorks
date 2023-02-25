@@ -27,6 +27,7 @@ router.post("/create", async (req, res) => {
     amount: req.body.amount,
     coordinates: req.body.coordinates,
     jobOptions: req.body.jobOptions,
+    phoneNumber: req.body.phoneNumber
   });
 
   try {
@@ -80,7 +81,7 @@ router.get("/search/:id", async (req, res) => {
 });
 
 //UPDATE
-router.put("/update/:id", verifyToken, async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   try {
     const updatedJobs = await Jobs.findByIdAndUpdate(
       req.params.id,
@@ -126,7 +127,7 @@ router.put("/update/:id", verifyToken, async (req, res) => {
 //   }
 // });
 //DELETE
-router.delete("/delete/:id", verifyToken, async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const temp = await Jobs.findByIdAndDelete(req.params.id);
     if (!temp) {
