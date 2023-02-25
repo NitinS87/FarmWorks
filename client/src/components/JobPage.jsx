@@ -9,18 +9,28 @@ const JobPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const { user } = useContext(UserContext);
+  const { user, userType } = useContext(UserContext);
   const [job, setJob] = useState("");
   const params = useParams();
+  const [apply, setApply] = useState(false);
+  const [comments, setComments] = useState("");
+  const [check, setCheck] = useState(false);
   // console.log(params);
   const url = `/api/jobs/search/${params.id}`;
   useEffect(() => {
-    // console.log("hgcgfdfhtfhf");
     axios.get(url).then((response) => {
       setJob(response.data);
-      // console.log(response.data);
+      console.log(response.data);
+
+      for (var i = 0; i < job.interested?.length; i++) {
+        if (job.interested[i].id === user.email) {
+          setCheck(true);
+          console.log(check);
+          break;
+        }
+      }
     });
-  }, [url]);
+  }, [url, check, apply]);
   const dt1 = new Date(Date.now());
   // const dt2 = new Date(Date(job.createdOn));
   const dt2 = new Date(job.createdOn);
@@ -50,6 +60,41 @@ const JobPage = () => {
   };
   const handleApply = (e) => {
     e.preventDefault();
+    if (!check) {
+      setApply(!apply);
+    }
+  };
+
+  const handleApplySubmit = (e) => {
+    e.preventDefault();
+
+    if (check === true) {
+      setApply(false);
+    } else {
+      setApply(true);
+    }
+
+    reqInstance
+      .post("/api/jobs/interested", {
+        id: user.email,
+        type: userType,
+        jobId: job._id,
+        comments: comments,
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (check === true) {
+          setError(response.data);
+          setCheck(false);
+        } else {
+          setSuccess(response.data);
+          setCheck(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setError(err.response.data);
+      });
   };
   return (
     <div className="w-[85%] h-full relative mx-auto my-16">
@@ -80,9 +125,13 @@ const JobPage = () => {
               Delete
             </button>
           </div>
-        ) : (
+        ) : !check ? (
           <button className="button" onClick={handleApply}>
             Apply For this job
+          </button>
+        ) : (
+          <button className="button" onClick={handleApplySubmit}>
+            Already applied!
           </button>
         )}
       </div>
@@ -184,6 +233,60 @@ const JobPage = () => {
         <div className="bg-[#fafafa] lg:w-[40%] w-[85%] !overflow-y-auto px-5 py-2 break-words">
           <h1 className="m-1 font-bold text-xl text-gray-400">Description</h1>
           <span className="m-1">{job.jobDesc}</span>
+        </div>
+      </div>
+
+      {/* Side-drawer Menu */}
+      <div
+        className={
+          apply
+            ? "fixed top-0  left-0 w-screen h-screen bg-black/60 z-10 duration-300"
+            : "fixed top-0 left-[-100%] w-[300px] h-screen bg-white z-10 duration-300"
+        }
+      >
+        <span
+          className="material-symbols-outlined absolute right-10 top-4 cursor-pointer text-white"
+          onClick={() => setApply(!apply)}
+          size={30}
+        >
+          close
+        </span>
+
+        <div className="flex justify-center items-center w-screen h-screen">
+          <div className="w-[85%] h-[85%] flex-col items-center justify-center bg-white rounded-md">
+            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto w-[60%]">
+              <span className="material-symbols-outlined mr-4 ml-2">badge</span>
+              <span className="text-gray-400">
+                User Email:{" "}
+                <span className="text-black mx-2">{user?.email}</span>
+              </span>
+            </div>
+            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto w-[60%]">
+              <span className="material-symbols-outlined mr-4 ml-2">badge</span>
+              <span className="text-gray-400">
+                Job name:{" "}
+                <span className="text-black mx-2">{job?.jobName}</span>
+              </span>
+            </div>
+
+            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto w-[60%]">
+              <span className="material-symbols-outlined mr-4 ml-2">
+                description
+              </span>
+              <textarea
+                className="w-[100%] outline-none h-24 resize-y"
+                placeholder="Comments - (minimum 100 words)"
+                onChange={(e) => setComments(e.target.value)}
+                value={comments}
+              />
+            </div>
+
+            <div className="w-full flex justify-center items-center mt-4">
+              <button className="button mx-auto" onClick={handleApplySubmit}>
+                Apply for job!
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

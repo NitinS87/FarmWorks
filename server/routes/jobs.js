@@ -44,7 +44,7 @@ router.get("/find/:farmerId", verifyToken, async (req, res) => {
   try {
     const jobs = await Jobs.find({ farmerId: req.params.farmerId });
     if (!jobs) {
-      res.status(202).json("job does not exist");
+      res.status(202).json("Job does not exist");
     } else {
       res.status(200).json(jobs);
     }
@@ -71,7 +71,7 @@ router.get("/search/:id", async (req, res) => {
   try {
     const jobs = await Jobs.findById(req.params.id);
     if (!jobs) {
-      res.status(202).json("job does not exist");
+      res.status(202).json("Job does not exist");
     } else {
       res.status(200).json(jobs);
     }
@@ -97,35 +97,32 @@ router.put("/update/:id", verifyToken, async (req, res) => {
   }
 });
 
-// // UPDATE
-// router.put("/interested/", verifyToken, async (req, res) => {
-//   try {
-//     const { id, type, comments, jobId } = req.body;
-//     const job = Jobs.findById(jobId);
-//     var check = false;
-//     for (var i = 0; i < job.length; i++) {
-//       if (job[i].id === id) {
-//         job.splice(i, 1);
-//         check = true;
-//         break;
-//       }
-//     }
-//     if (check !== true) {
-//       job.push({
-//         id,
-//         type,
-//         comments,
-//       });
-//       await job.save();
-//       res.status(200).json("data added");
-//     } else {
-//       await job.save();
-//       res.status(200).json("data deleted");
-//     }
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+router.post("/interested", verifyToken, async (req, res) => {
+  try {
+    const { id, type, comments, jobId } = req.body;
+    console.log(id, type, comments, jobId);
+    const job = await Jobs.findById(jobId);
+    var check = false;
+    var obj = { id: id, type: type, comments: comments };
+    for (var i = 0; i < job.interested.length; i++) {
+      if (job.interested[i].id === id) {
+        check = true;
+        obj = job.interested[i];
+        // console.log(check);
+        break;
+      }
+    }
+    if (!check) {
+      await Jobs.findByIdAndUpdate(jobId, { $push: { interested: obj } });
+      res.status(200).json("Data added");
+    } else {
+      await Jobs.findByIdAndUpdate(jobId, { $pull: { interested: obj } });
+      res.status(200).json("Data deleted");
+    }
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+});
 //DELETE
 router.delete("/delete/:id", verifyToken, async (req, res) => {
   try {
