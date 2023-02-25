@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "./../context/UserContext";
+import reqInstance from "../api";
 
 const Jobs = ({ url }) => {
   // const { user, setUser } = useContext(LoginContext);
   const [jobs, setJobs] = useState();
   useEffect(() => {
-    axios.get(url).then((response) => {
+    reqInstance.get(url).then((response) => {
       setJobs(response.data);
       // console.log(response.data);
     });
-  }, []);
+  }, [url]);
 
   // console.log(user);
   return (

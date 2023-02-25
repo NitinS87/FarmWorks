@@ -1,11 +1,11 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import HeroBanner from "./HeroBanner";
 
 const Login = () => {
-  const { user, setUser, userType, setUserType } = useContext(UserContext);
+  const { setUser, userType, setUserType } = useContext(UserContext);
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -19,7 +19,7 @@ const Login = () => {
     console.log(email, password, userType);
 
     axios
-      .post(`http://localhost:8000/api/${type}/login`, {
+      .post(`/api/${type}/login`, {
         email: email,
         password: password,
       })
@@ -29,8 +29,8 @@ const Login = () => {
         setUser(d.data.user);
         setUserType(type);
         localStorage.setItem("Authorization", d.data.token);
-        localStorage.setItem("User", JSON.stringify(d.data.user));
-        localStorage.setItem("Type", JSON.stringify(d.data.type));
+        // localStorage.setItem("User", JSON.stringify(d.data.user));
+        // localStorage.setItem("Type", JSON.stringify(d.data.type));
         navigate("/");
       })
       .catch((err) => {

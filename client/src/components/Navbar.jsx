@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { UserContext } from "../context/UserContext";
 const Navbar = () => {
-  const { user, setUser, userType, setUserType } = useContext(UserContext);
+  const { user, userType } = useContext(UserContext);
   return (
     <div className="w-full shadow-md text-lg">
       <nav className="w-[85%] h-[20%] flex mx-auto justify-between md:justify-start">

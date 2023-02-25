@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
+import reqInstance from "./api";
 import CreateJob from "./components/CreateJob";
 import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
@@ -11,21 +12,30 @@ import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import UpdateJob from "./components/UpdateJob";
-import { UserContext, UserProvider } from "./context/UserContext";
+import { UserContext } from "./context/UserContext";
 
+axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.withCredentials = true;
+// axios.defaults.headers.common["token"] = localStorage.getItem("Authorization");
 function App() {
   const { user, setUser, setUserType } = useContext(UserContext);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("User"));
-    // console.log(localStorage.getItem("User"));
-    if (userData != null) setUser(userData);
-    // console.log(userData);
-    const type = JSON.parse(localStorage.getItem("Type"));
-    // console.log(localStorage.getItem("Type"));
-    // console.log(type);
-    if (type != null) setUserType(type);
-  }, []);
+    // const userData = JSON.parse(localStorage.getItem("User"));
+    // // console.log(localStorage.getItem("User"));
+    // if (userData != null) setUser(userData);
+    // // console.log(userData);
+    // const type = JSON.parse(localStorage.getItem("Type"));
+    // // console.log(localStorage.getItem("Type"));
+    // // console.log(type);
+    // if (type != null) setUserType(type);
+    const token = localStorage.getItem("Authorization");
+    if (token)
+      reqInstance.get("/profile").then((response) => {
+        setUser(response.data.user);
+        setUserType(response.data.type);
+      });
+  }, [setUser, setUserType]);
   return (
     <div className="min-w-full min-h-screen overflow-hidden">
       <Navbar />

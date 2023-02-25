@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import reqInstance from "../api";
 import { UserContext } from "../context/UserContext";
 
 const UpdateJob = () => {
   const [job, setJob] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [jobName, setJobName] = useState("");
@@ -30,46 +31,44 @@ const UpdateJob = () => {
   });
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/api/jobs/search/${params.id}`)
-      .then((response) => {
-        setJobName(response.data.jobName);
-        setJobDesc(response.data.jobDesc);
-        setLand(response.data.land);
-        setCompletionDays(response.data.completionDays);
-        setAmount(response.data.amount);
-        setCoordinates(response.data.coordinates);
-        setJobOptions(response.data.jobOptions);
-        setJob(response.data);
-      });
-  }, []);
+    axios.get(`/api/jobs/search/${params.id}`).then((response) => {
+      setJobName(response.data.jobName);
+      setJobDesc(response.data.jobDesc);
+      setLand(response.data.land);
+      setCompletionDays(response.data.completionDays);
+      setAmount(response.data.amount);
+      setCoordinates(response.data.coordinates);
+      setJobOptions(response.data.jobOptions);
+      setJob(response.data);
+    });
+  }, [params.id]);
 
-  console.log(
-    jobName,
-    jobDesc,
-    jobOptions,
-    amount,
-    completionDays,
-    land,
-    coordinates
-  );
+  // console.log(
+  //   jobName,
+  //   jobDesc,
+  //   jobOptions,
+  //   amount,
+  //   completionDays,
+  //   land,
+  //   coordinates
+  // );
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(
-      jobName,
-      jobDesc,
-      completionDays,
-      land,
-      amount,
-      coordinates,
-      jobOptions
-    );
+    // console.log(
+    //   jobName,
+    //   jobDesc,
+    //   completionDays,
+    //   land,
+    //   amount,
+    //   coordinates,
+    //   jobOptions
+    // );
 
     console.log(user);
-    axios
-      .put(`http://localhost:8000/api/jobs/update/${job._id}`, {
+    reqInstance
+      .put(`/api/jobs/update/${job._id}`, {
         farmerId: user.email,
         jobName: jobName,
         jobDesc: jobDesc,

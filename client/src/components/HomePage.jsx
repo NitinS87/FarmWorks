@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <div className="mx-auto relative flex flex-col gap-10">
       <HeroBanner />
-      <Jobs url="http://localhost:8000/api/jobs" />
+      <Jobs url="/api/jobs" />
     </div>
   );
 };

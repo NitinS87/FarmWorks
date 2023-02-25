@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 
 function HeroBanner() {
@@ -21,18 +20,6 @@ function HeroBanner() {
   ];
   const delay = 3500;
   const [currentIndex, setCurrentIndex] = useState(0);
-  const prevSlide = () => {
-    const isFirstIndex = currentIndex === 0;
-    const newIndex = isFirstIndex ? slides.length - 1 : currentIndex - 1;
-
-    setCurrentIndex(newIndex);
-  };
-  const nextSlide = () => {
-    const isLastIndex = currentIndex === slides.length - 1;
-    const newIndex = isLastIndex ? 0 : currentIndex + 1;
-
-    setCurrentIndex(newIndex);
-  };
 
   const goToSlide = (slideIndex) => {
     setCurrentIndex(slideIndex);
@@ -46,7 +33,7 @@ function HeroBanner() {
         ),
       delay
     );
-  }, [currentIndex]);
+  }, [currentIndex, slides.length]);
 
   return (
     <div className="max-w-[1200px] h-[600px] w-full mx-auto py-16 px-4 relative group">

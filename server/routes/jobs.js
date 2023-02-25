@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 });
 
 //CREATE
-router.post("/create", async (req, res) => {
+router.post("/create", verifyToken, async (req, res) => {
   const jobs = new Jobs({
     farmerId: req.body.farmerId,
     jobName: req.body.jobName,
@@ -27,7 +27,7 @@ router.post("/create", async (req, res) => {
     amount: req.body.amount,
     coordinates: req.body.coordinates,
     jobOptions: req.body.jobOptions,
-    phoneNumber: req.body.phoneNumber
+    phoneNumber: req.body.phoneNumber,
   });
 
   try {
@@ -40,7 +40,7 @@ router.post("/create", async (req, res) => {
 });
 
 //GET FARMER JOBS
-router.get("/find/:farmerId", async (req, res) => {
+router.get("/find/:farmerId", verifyToken, async (req, res) => {
   try {
     const jobs = await Jobs.find({ farmerId: req.params.farmerId });
     if (!jobs) {
@@ -81,7 +81,7 @@ router.get("/search/:id", async (req, res) => {
 });
 
 //UPDATE
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", verifyToken, async (req, res) => {
   try {
     const updatedJobs = await Jobs.findByIdAndUpdate(
       req.params.id,
@@ -127,7 +127,7 @@ router.put("/update/:id", async (req, res) => {
 //   }
 // });
 //DELETE
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", verifyToken, async (req, res) => {
   try {
     const temp = await Jobs.findByIdAndDelete(req.params.id);
     if (!temp) {

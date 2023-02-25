@@ -1,12 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import HeroBanner from "./HeroBanner";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Country, State, City } from "country-state-city";
-import { UserContext } from "../context/UserContext";
+import { State, City } from "country-state-city";
 
 const Register = () => {
-  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [name, setName] = useState("");
@@ -28,20 +26,20 @@ const Register = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("clicked");
-    console.log(
-      name,
-      email,
-      password,
-      aadharNumber,
-      phoneNumber,
-      state,
-      city,
-      userType,
-      accepts
-    );
+    // console.log("clicked");
+    // console.log(
+    //   name,
+    //   email,
+    //   password,
+    //   aadharNumber,
+    //   phoneNumber,
+    //   state,
+    //   city,
+    //   userType,
+    //   accepts
+    // );
     axios
-      .post(`http://localhost:8000/api/${userType}/register`, {
+      .post(`/api/${userType}/register`, {
         name: name,
         email: email,
         password: password,
@@ -228,7 +226,7 @@ const Register = () => {
                 id="terms"
                 name="terms"
                 value={accepts}
-                onChange={() => (setAccepts(!accepts), console.log(accepts))}
+                onChange={() => setAccepts(!accepts)}
                 className="mr-2"
               />
               <label htmlFor="terms">

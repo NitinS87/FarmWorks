@@ -1,24 +1,19 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Link,
-  redirect,
-  Route,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import reqInstance from "./../api";
 
 const JobPage = () => {
   const token = localStorage.getItem("Authorization");
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [job, setJob] = useState("");
   const params = useParams();
   // console.log(params);
-  const url = `http://localhost:8000/api/jobs/search/${params.id}`;
+  const url = `/api/jobs/search/${params.id}`;
   useEffect(() => {
     // console.log("hgcgfdfhtfhf");
     axios.get(url).then((response) => {
@@ -41,8 +36,8 @@ const JobPage = () => {
     e.preventDefault();
 
     console.log("delete");
-    axios
-      .delete(`http://localhost:8000/api/jobs/delete/${params.id}`, { token })
+    reqInstance
+      .delete(`/api/jobs/delete/${params.id}`, { token })
       .then((response) => {
         // console.log(response.data);
         setSuccess(response.data);
@@ -155,6 +150,7 @@ const JobPage = () => {
             <a
               href={`http://maps.google.com/maps?q=${job.coordinates?.lat},${job.coordinates?.long}`}
               target="_blank"
+              rel="noreferrer"
               className="flex items-center hover:scale-105 ease-in-out duration-300"
             >
               <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
@@ -185,7 +181,7 @@ const JobPage = () => {
           ) : null}
         </div>
         {/* Description */}
-        <div className="bg-[#fafafa] lg:w-[40%] w-[85%] overflow-auto px-5 py-2">
+        <div className="bg-[#fafafa] lg:w-[40%] w-[85%] !overflow-y-auto px-5 py-2 break-words">
           <h1 className="m-1 font-bold text-xl text-gray-400">Description</h1>
           <span className="m-1">{job.jobDesc}</span>
         </div>

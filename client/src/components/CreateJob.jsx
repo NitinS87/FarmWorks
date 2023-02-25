@@ -1,10 +1,10 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import reqInstance from './../api';
 
-const CreateJob = ({ op }) => {
-  const { user, setUser } = useContext(UserContext);
+const CreateJob = () => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [jobName, setJobName] = useState("");
@@ -18,7 +18,7 @@ const CreateJob = ({ op }) => {
   //   const [latitude, setLatitude] = useState("");
   //   const [longitude, setLongitude] = useState("");
 
-  const handleLocationCLicked = (e) => {
+  const handleLocationCLicked = () => {
     console.log("clicked");
     navigator.geolocation.watchPosition(function (position) {
       // console.log("Latitude is :", position.coords.latitude);
@@ -44,8 +44,8 @@ const CreateJob = ({ op }) => {
     );
 
     console.log(user);
-    axios
-      .post(`http://localhost:8000/api/jobs/create`, {
+    reqInstance
+      .post(`/api/jobs/create`, {
         farmerId: user.email,
         jobName: jobName,
         jobDesc: jobDesc,
