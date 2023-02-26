@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import reqInstance from "./api";
+import AppliedJobs from "./components/AppliedJobs";
 import CreateJob from "./components/CreateJob";
 import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
@@ -12,13 +13,13 @@ import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import UpdateJob from "./components/UpdateJob";
+import ViewProfile from "./components/ViewProfile";
 import { UserContext } from "./context/UserContext";
 
 axios.defaults.baseURL = "http://localhost:8000";
-axios.defaults.withCredentials = true;
 // axios.defaults.headers.common["token"] = localStorage.getItem("Authorization");
 function App() {
-  const { user, setUser, setUserType } = useContext(UserContext);
+  const { user, setUser, userType, setUserType } = useContext(UserContext);
 
   useEffect(() => {
     // const userData = JSON.parse(localStorage.getItem("User"));
@@ -36,6 +37,8 @@ function App() {
         setUserType(response.data.type);
       });
   }, [setUser, setUserType]);
+
+  console.log(user);
   return (
     <div className="min-w-full min-h-screen overflow-hidden">
       <Navbar />
@@ -47,6 +50,15 @@ function App() {
         <Route path="/account" element={<Profile />} />
         <Route path="/create" element={<CreateJob />} />
         <Route path="/update/:id" element={<UpdateJob />} />
+        <Route path="/profile/:type/:profileId" element={<ViewProfile />} />
+        <Route
+          path="/appliedJobs"
+          element={
+            <Jobs
+              url={`http://localhost:8000/api/${userType}/interested/${user?.email}`}
+            />
+          }
+        />
         <Route
           path="/userJobs"
           element={

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Contractor = require("../model/Contractor.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const verifyToken = require("../middleware/auth.js");
 
 //REGISTER
 router.post("/register", async (req, res) => {
@@ -14,6 +15,7 @@ router.post("/register", async (req, res) => {
     city: req.body.city,
     phoneNumber: req.body.phoneNumber,
     aadharNumber: req.body.aadharNumber,
+    profile: req.body.profile,
   });
 
   try {
@@ -42,6 +44,34 @@ router.post("/login", async (req, res) => {
     }
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+//ADD INTERESTED JOBS
+router.post("/interested", verifyToken, async (req, res) => {
+  try {
+    const { id, type, comments, jobId } = req.body;
+    console.log(id, type, comments, jobId);
+    const job = await Contractor.findById(jobId);
+    var check = false;
+    var obj = { id: id, type: type, comments: comments };
+    for (var i = 0; i < job.interested.length; i++) {
+      if (job.interested[i].id === id) {
+        check = true;
+        obj = job.interested[i];
+        // console.log(check);
+        break;
+      }
+    }
+    if (!check) {
+      await Contractor.findByIdAndUpdate(jobId, { $push: { interested: obj } });
+      res.status(200).json("Data added");
+    } else {
+      await Contractor.findByIdAndUpdate(jobId, { $pull: { interested: obj } });
+      res.status(200).json("Data deleted");
+    }
+  } catch (err) {
+    res.status(500).json(err.message);
   }
 });
 

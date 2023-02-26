@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const { user, setUser, userType, setUserType } = useContext(UserContext);
+  const { user, setUser, setUserType } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogout = (e) => {
@@ -16,7 +16,7 @@ const Profile = () => {
     localStorage.clear();
     navigate("/");
   };
-  console.log(user, userType);
+  // console.log(user, userType);
   if (user) {
     return (
       <div className="lg:w-[75%] mx-auto h-full p-2 my-10 w-[85%]">
@@ -31,11 +31,19 @@ const Profile = () => {
               <div className="z-[-1] rounded-lg absolute w-[70%] h-[70%] bg-gray-700/[0.4]"></div>
             </div>
           </div>
-          <img
-            src={profilePic}
-            className="border-white border-[1px] mx-auto rounded-full shadow-xl w-[30%]"
-            alt=""
-          />
+          {user.profile ? (
+            <img
+              src={user.profile}
+              className="border-white border-[1px] mx-auto rounded-full shadow-xl w-[30%]"
+              alt="your photos"
+            />
+          ) : (
+            <img
+              src={profilePic}
+              className="border-white border-[1px] mx-auto rounded-full shadow-xl w-[30%]"
+              alt="default"
+            />
+          )}
         </div>
         <div className="flex-col gap-10 mx-auto lg:w-[70%] w-[95%]">
           <div className="border flex items-center p-2 mt-4 rounded-md">

@@ -59,6 +59,10 @@ const JobsSchema = new mongoose.mongoose.Schema({
     default: "",
     required: true,
   },
+  pictures: {
+    type: Array,
+    default: [],
+  },
   // review: {
   //   type: Object,
   //   default: {},

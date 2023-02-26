@@ -16,13 +16,61 @@ const Register = () => {
   const [city, setCity] = useState("");
   const [userType, setUserType] = useState("");
   const [accepts, setAccepts] = useState(false);
+  const [image, setImage] = useState("");
+  const [profile, setProfile] = useState("");
 
+  const [progress, setProgress] = useState(0);
   // console.log(state);
   const states = State.getStatesOfCountry("IN");
   // console.log(states);
   const cities = City.getCitiesOfState("IN", state);
   // console.log(cities);
   // console.log(city);
+
+  const submitImage = async () => {
+    const data = new FormData();
+    const cloudName = "dgmcl4cdm";
+
+    data.append("file", image);
+    data.append("upload_preset", "nitindemo");
+    data.append("folder", "farmworks"); // set up your upload_preset on cloudinary.
+
+    try {
+      const res = await axios.post(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        data,
+        {
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            // console.log(progress);
+            setProgress(progress);
+          },
+        }
+      );
+      console.log(res.data.secure_url);
+      setProfile(res.data.secure_url);
+      // return res.data.secure_url;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
+  const ProgressBar = ({ progress }) => (
+    <div className="progress">
+      <div
+        className="progress-bar bg-green-400 rounded-md text-center"
+        role="progressbar"
+        style={{ width: `${progress}%` }}
+        aria-valuenow={progress}
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <span value={progress}>{`${progress}%`}</span>
+      </div>
+    </div>
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,6 +95,7 @@ const Register = () => {
         phoneNumber: phoneNumber,
         state: state,
         city: city,
+        profile: profile,
       })
       .then((d) => {
         console.log(d.data);
@@ -195,6 +244,35 @@ const Register = () => {
                   </select>
                 </span>
               </span>
+            </div>
+
+            <div className="border flex-col items-center p-2 mt-4 rounded-md">
+              <div className="flex">
+                <span className="material-symbols-outlined mr-4 ml-2">
+                  <span className="material-symbols-outlined">
+                    photo_camera
+                  </span>
+                </span>
+                <input
+                  className="w-[100%] outline-none"
+                  type="file"
+                  placeholder="Profile Picture"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+                <button
+                  type="button"
+                  className="p-2 border rounded-md flex items-center"
+                  onClick={submitImage}
+                >
+                  <span className="material-symbols-outlined">
+                    cloud_upload
+                  </span>
+                  Upload
+                </button>
+              </div>
+              <div className="w-[97%] mx-auto my-2">
+                <ProgressBar progress={progress} />
+              </div>
             </div>
 
             <div className="border flex items-center p-2 mt-4">

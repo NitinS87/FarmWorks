@@ -22,11 +22,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(
-  cors({
-    credentials: true,
-  })
-);
+app.use(cors({ credentials: true }));
 
 //routes
 app.use("/api/farmer", farmerRoute);
@@ -66,20 +62,71 @@ app.get("/profile", (req, res) => {
         var user = null;
         var type = userData.type;
         var email = userData.userEmail;
-        if (userData.type === "farmer") {
-          var { name, email, state, city, phoneNumber, aadharNumber } =
-            await Farmer.findOne({email});
-          user = { name, email, state, city, phoneNumber, aadharNumber };
+        if (userData?.type === "farmer") {
+          var {
+            name,
+            email,
+            state,
+            city,
+            phoneNumber,
+            aadharNumber,
+            interested,
+            profile,
+          } = (await Farmer.findOne({ email })) || {};
+          user = {
+            name,
+            email,
+            state,
+            city,
+            phoneNumber,
+            aadharNumber,
+            interested,
+            profile,
+          };
         }
-        if (userData.type === "labour") {
-          var { name, email, state, city, phoneNumber, aadharNumber } =
-            await Labour.findOne({email});
-          user = { name, email, state, city, phoneNumber, aadharNumber };
+        if (userData?.type === "labour") {
+          var {
+            name,
+            email,
+            state,
+            city,
+            phoneNumber,
+            aadharNumber,
+            interested,
+            profile,
+          } = (await Labour.findOne({ email })) || {};
+          user = {
+            name,
+            email,
+            state,
+            city,
+            phoneNumber,
+            aadharNumber,
+            interested,
+            profile,
+          };
         }
-        if (userData.type === "contractor") {
-          var { name, email, state, city, phoneNumber, aadharNumber } =
-            await Contractor.findOne({email});
-          user = { name, email, state, city, phoneNumber, aadharNumber };
+        if (userData?.type === "contractor") {
+          var {
+            name,
+            email,
+            state,
+            city,
+            phoneNumber,
+            aadharNumber,
+            interested,
+            profile,
+          } = (await Contractor.findOne({ email })) || {};
+          user = {
+            name,
+            email,
+            state,
+            city,
+            phoneNumber,
+            aadharNumber,
+            interested,
+            profile,
+          };
         }
         console.log({ user, type });
         res.status(200).json({ user, type });
@@ -88,4 +135,69 @@ app.get("/profile", (req, res) => {
   } else {
     res.json(null);
   }
+});
+
+app.get("/profile/:type/:userId", async (req, res) => {
+  var email = req.params.userId;
+  var type = req.params.type;
+  if (type === "farmer") {
+    var { name, email, state, city, phoneNumber, aadharNumber, profile } =
+      await Farmer.findOne({ email });
+    user = {
+      name,
+      email,
+      state,
+      city,
+      phoneNumber,
+      aadharNumber,
+      interested,
+      profile,
+    };
+  }
+  if (type === "labour") {
+    var {
+      name,
+      email,
+      state,
+      city,
+      phoneNumber,
+      aadharNumber,
+      profile,
+      interested,
+    } = await Labour.findOne({ email });
+    user = {
+      name,
+      email,
+      state,
+      city,
+      phoneNumber,
+      aadharNumber,
+      interested,
+      profile,
+    };
+  }
+  if (type === "contractor") {
+    var {
+      name,
+      email,
+      state,
+      city,
+      phoneNumber,
+      aadharNumber,
+      interested,
+      profile,
+    } = await Contractor.findOne({ email });
+    user = {
+      name,
+      email,
+      state,
+      city,
+      phoneNumber,
+      aadharNumber,
+      interested,
+      profile,
+    };
+  }
+  console.log({ user });
+  res.status(200).json({ user });
 });

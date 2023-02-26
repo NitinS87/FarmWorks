@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
@@ -15,11 +16,79 @@ const CreateJob = () => {
   const [amount, setAmount] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [jobOptions, setJobOptions] = useState("");
+  const [images, setImages] = useState([]);
   //   const [latitude, setLatitude] = useState("");
   //   const [longitude, setLongitude] = useState("");
 
+  const [progress, setProgress] = useState(0);
+
+  const uploadAllToCloudinary = async (files, onUploadProgress) => {
+    const uploadedImageUrls = [];
+    for (let i = 0; i < files.length; i++) {
+      try {
+        const url = await uploadToCloudinary(files[i], onUploadProgress);
+        uploadedImageUrls.push(url);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
+    return uploadedImageUrls;
+  };
+  const uploadToCloudinary = async (file, onUploadProgress) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const cloudName = "dgmcl4cdm";
+    const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+    formData.append("upload_preset", "nitindemo");
+    formData.append("folder", `farmworks/${user.email}`);
+
+    try {
+      const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData, {
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          onUploadProgress(progress);
+        },
+      });
+      console.log("Files uploaded successfully:", response.data.secure_url);
+      return response.data.secure_url;
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      throw error;
+    }
+  };
+
+  const handleFileUpload = async (event) => {
+    const files = event.target.files;
+    try {
+      console.log(files);
+      const uploadedImageUrls = await uploadAllToCloudinary(files, setProgress);
+      // do something with the uploaded image URL
+      setImages(uploadedImageUrls);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+  // console.log(images);
+
+  const ProgressBar = ({ progress }) => (
+    <div className="progress">
+      <div
+        className="progress-bar bg-green-400 rounded-md text-center"
+        role="progressbar"
+        style={{ width: `${progress}%` }}
+        aria-valuenow={progress}
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        <span value={progress}>{`${progress}%`}</span>
+      </div>
+    </div>
+  );
+
   const handleLocationCLicked = () => {
-    console.log("clicked");
+    // console.log("clicked");
     navigator.geolocation.watchPosition(function (position) {
       // console.log("Latitude is :", position.coords.latitude);
       // console.log("Longitude is :", position.coords.longitude);
@@ -40,7 +109,8 @@ const CreateJob = () => {
       land,
       amount,
       coordinates,
-      jobOptions
+      jobOptions,
+      images
     );
 
     console.log(user);
@@ -55,6 +125,7 @@ const CreateJob = () => {
         coordinates: coordinates,
         jobOptions: jobOptions,
         phoneNumber: user.phoneNumber,
+        pictures: images,
       })
       .then((d) => {
         console.log(d.data);
@@ -147,6 +218,51 @@ const CreateJob = () => {
                 />
               </div>
 
+              <div className="border flex-col items-center p-2 mt-4 rounded-md">
+                <div className="flex items-center justify-center w-full">
+                  <label
+                    htmlFor="dropzone-file"
+                    className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 "
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg
+                        aria-hidden="true"
+                        className="w-10 h-10 mb-3 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                        ></path>
+                      </svg>
+                      <p className="mb-2 text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span>{" "}
+                        or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        SVG, PNG, JPG or GIF (MAX. 800x400px)
+                      </p>
+                    </div>
+                    <input
+                      id="dropzone-file"
+                      type="file"
+                      multiple
+                      className="hidden"
+                      onChange={handleFileUpload}
+                    />
+                  </label>
+                </div>
+
+                <div className="w-[97%] mx-auto my-2">
+                  <ProgressBar progress={progress} />
+                </div>
+              </div>
+
               <div
                 className="p-2 mt-4 border rounded-md"
                 onClick={handleLocationCLicked}
@@ -186,7 +302,9 @@ const CreateJob = () => {
                       />
                     </span>
                   </span>
-                  <span class="material-symbols-outlined p-2 border mx-2">location_on</span>
+                  <span className="material-symbols-outlined p-2 border mx-2">
+                    location_on
+                  </span>
                 </div>
               </div>
 

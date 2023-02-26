@@ -43,6 +43,9 @@ const FarmerSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    profile: {
+      type: String,
+    },
     job: {
       type: Array,
       default: [],

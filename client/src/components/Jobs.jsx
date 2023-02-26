@@ -16,7 +16,7 @@ const Jobs = ({ url }) => {
   return (
     <div className="w-[80%] relative mx-auto mb-16">
       <h1 className="text-3xl text-gray-500 p-2">Available Jobs</h1>
-      <div className="grid lg:grid-cols-2 grid-cols-1  gap-8">
+      <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 w-full">
         {jobs
           ?.sort((a, b) =>
             a.createdOn > b.createdOn ? 1 : b.createdOn > a.createdOn ? -1 : 0
@@ -24,22 +24,26 @@ const Jobs = ({ url }) => {
           .slice(0, 6)
           ?.map((job, jobIdx) => (
             <div
-              className="lg:h-[100px] h-full mx-auto flex flex-col lg:flex-row justify-evenly items-center border-l-4 border-l-[#5FBC7C] border px-8 gap-10"
+              className="lg:h-[100px] w-full h-full mx-auto flex lg:flex-row flex-col justify-center items-center border-x-4 border-x-[#5FBC7C] border lg:px-8 gap-2 lg:gap-10 my-2"
               key={jobIdx}
             >
-              <div className="bg-gray-300 p-2">
-                <span className="material-symbols-outlined">work</span>
-              </div>
-              <div className="h-[70%] my-auto flex-col">
-                <div className="mb-3 text-xl">
-                  {job.jobName.length > 15
-                    ? job.jobName.slice(0, 15) + "..."
-                    : job.jobName}
+              <div className="flex items-center gap-2">
+                <div className="bg-gray-300 p-2">
+                  <span className="material-symbols-outlined text-4xl">
+                    work
+                  </span>
                 </div>
-                <div className="text-[#C0C0C0]">
-                  {job.jobDesc.length > 20
-                    ? job.jobDesc.slice(0, 20) + "..."
-                    : job.jobDesc}
+                <div className="flex-col">
+                  <div className="mb-3 text-xl">
+                    {job.jobName.length > 15
+                      ? job.jobName.slice(0, 15) + "..."
+                      : job.jobName}
+                  </div>
+                  <div className="text-[#C0C0C0]">
+                    {job.jobDesc.length > 20
+                      ? job.jobDesc.slice(0, 20) + "..."
+                      : job.jobDesc}
+                  </div>
                 </div>
               </div>
               <div>
@@ -49,7 +53,7 @@ const Jobs = ({ url }) => {
               <div>
                 <div className="mt-4 rounded-md">
                   <Link to={`/jobs/${job._id}`}>
-                    <button className="bg-[#52c075] p-2 text-white hover:scale-105 hover:text-black duration-300 ease-in-out">
+                    <button className="bg-[#52c075] p-4 font-semibold text-xl lg:text-base text-white hover:scale-105 hover:text-black duration-300 ease-in-out">
                       View Details
                     </button>
                   </Link>

@@ -18,19 +18,26 @@ const JobPage = () => {
   // console.log(params);
   const url = `/api/jobs/search/${params.id}`;
   useEffect(() => {
-    axios.get(url).then((response) => {
-      setJob(response.data);
-      console.log(response.data);
-
-      for (var i = 0; i < job.interested?.length; i++) {
-        if (job.interested[i].id === user.email) {
-          setCheck(true);
-          console.log(check);
-          break;
-        }
-      }
-    });
+    try {
+      axios.get(url).then((response) => {
+        setJob(response.data);
+        console.log(response.data);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    jobLoop();
   }, [url, check, apply]);
+
+  const jobLoop = (e) => {
+    for (var i = 0; i < job?.interested?.length; i++) {
+      console.log(check);
+      if (job.interested[i].id === user.email) {
+        setCheck(true);
+        break;
+      }
+    }
+  };
   const dt1 = new Date(Date.now());
   // const dt2 = new Date(Date(job.createdOn));
   const dt2 = new Date(job.createdOn);
@@ -60,18 +67,15 @@ const JobPage = () => {
   };
   const handleApply = (e) => {
     e.preventDefault();
-    if (!check) {
+    if (check === false) {
       setApply(!apply);
     }
   };
 
   const handleApplySubmit = (e) => {
     e.preventDefault();
-
-    if (check === true) {
-      setApply(false);
-    } else {
-      setApply(true);
+    if (check == false) {
+      setApply(!apply);
     }
 
     reqInstance
@@ -125,15 +129,17 @@ const JobPage = () => {
               Delete
             </button>
           </div>
-        ) : !check ? (
-          <button className="button" onClick={handleApply}>
-            Apply For this job
-          </button>
-        ) : (
-          <button className="button" onClick={handleApplySubmit}>
-            Already applied!
-          </button>
-        )}
+        ) : userType != "farmer" ? (
+          !check && jobLoop() ? (
+            <button className="button" onClick={handleApply}>
+              Apply For this job
+            </button>
+          ) : (
+            <button className="button" onClick={handleApplySubmit}>
+              Already applied!
+            </button>
+          )
+        ) : null}
       </div>
       {/* Job overview */}
       <div className="flex lg:flex-row flex-col justify-around ml-2 mt-10">
@@ -154,13 +160,11 @@ const JobPage = () => {
           </div>
           <div className="flex items-center my-2">
             <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-              map
+              filter_list
             </span>
             <div className="flex flex-col">
-              <span className="text-gray-500">Address </span>
-              <span>
-                {job.state}, {job.district}
-              </span>
+              <span className="text-gray-500">Status </span>
+              <span>{job.status}</span>
             </div>
           </div>
           <div className="flex items-center my-2">
@@ -235,7 +239,51 @@ const JobPage = () => {
           <span className="m-1">{job.jobDesc}</span>
         </div>
       </div>
-
+      <div className="w-[95%] mx-auto flex gap-2">
+        {job?.pictures?.map((picture, idx) => {
+          console.log(picture);
+          return (
+            <div className="flex overflow-auto">
+              <img src={picture} alt="" className="object-cover" />
+            </div>
+          );
+        })}
+      </div>
+      <div className="!w-[50%] mx-auto">
+        <div className="flex-col justify-around ml-2 mt-10 bg-[#fafafa] ">
+          <div className="px-5 py-2 flex items-center gap-1">
+            <span className="material-symbols-outlined">thumbs_up_down</span>
+            <h1 className="m-1 font-bold text-xl text-gray-400">Interested</h1>
+          </div>
+          <div className="mx-2">
+            {job.interested?.map((interest, idx) => {
+              console.log(interest);
+              return (
+                <div key={idx} className="flex gap-2 items-center">
+                  <div className="border-r px-2">
+                    <h1>{idx + 1}.</h1>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <span className="material-symbols-outlined p-2">
+                      group_add
+                    </span>
+                    <h1>{interest.id}</h1>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="text-gray-500">Comments: </span>
+                    <h1>{interest.comments}</h1>
+                  </div>
+                  <div>
+                    <Link to={`/profile/${interest.type}/${interest.id}`}>
+                      <button className="button">View Details</button>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
       {/* Side-drawer Menu */}
       <div
         className={

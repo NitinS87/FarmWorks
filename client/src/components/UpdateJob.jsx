@@ -18,6 +18,7 @@ const UpdateJob = () => {
   const [amount, setAmount] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [jobOptions, setJobOptions] = useState("");
+  const [jobStatus, setJobStatus] = useState("");
   //   const [latitude, setLatitude] = useState("");
   //   const [longitude, setLongitude] = useState("");
 
@@ -39,6 +40,7 @@ const UpdateJob = () => {
       setAmount(response.data.amount);
       setCoordinates(response.data.coordinates);
       setJobOptions(response.data.jobOptions);
+      setJobStatus(response.data.jobOptions);
       setJob(response.data);
     });
   }, [params.id]);
@@ -77,6 +79,7 @@ const UpdateJob = () => {
         amount: amount,
         coordinates: coordinates,
         jobOptions: jobOptions,
+        status: jobStatus,
       })
       .then((d) => {
         console.log(d.data);
@@ -216,6 +219,33 @@ const UpdateJob = () => {
                   </div>
                 </div>
 
+                <div className="border flex items-center p-2 mt-4">
+                  <span className="material-symbols-outlined mx-2">
+                    filter_list
+                  </span>
+                  <span className="flex justify-start w-full">
+                    <select
+                      defaultValue={"DEFAULT"}
+                      onChange={(e) => setJobStatus(e.target.value)}
+                      className="border outline-none p-2 w-full"
+                      placeholder="Select value"
+                      value={jobStatus}
+                    >
+                      <option value="DEFAULT" disabled>
+                        Choose a option ...
+                      </option>
+                      <option className="w-11" value="hiring">
+                        Hiring
+                      </option>
+                      <option className="w-11" value="ongoing">
+                        Ongoing
+                      </option>
+                      <option className="w-11" value="completed">
+                        Completed
+                      </option>
+                    </select>
+                  </span>
+                </div>
                 <div className="border flex items-center p-2 mt-4">
                   <span className="material-symbols-outlined mx-2">person</span>
                   <span className="flex justify-start w-full">

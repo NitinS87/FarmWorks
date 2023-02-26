@@ -43,9 +43,20 @@ const ContractorSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    profile: {
+      type: String,
+    },
     date: {
       type: Date,
       default: Date.now,
+    },
+    job: {
+      type: Array,
+      default: [],
+    },
+    interested: {
+      type: Array,
+      default: [],
     },
   },
   { timestamps: true }

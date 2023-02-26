@@ -14,6 +14,7 @@ router.post("/register", async (req, res) => {
     city: req.body.city,
     phoneNumber: req.body.phoneNumber,
     aadharNumber: req.body.aadharNumber,
+    profile: req.body.profile,
   });
 
   try {

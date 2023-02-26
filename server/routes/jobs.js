@@ -28,6 +28,7 @@ router.post("/create", verifyToken, async (req, res) => {
     coordinates: req.body.coordinates,
     jobOptions: req.body.jobOptions,
     phoneNumber: req.body.phoneNumber,
+    pictures: req.body.pictures,
   });
 
   try {
