@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext";
 import HeroBanner from "./HeroBanner";
 
 const Login = () => {
-  const { setUser, userType, setUserType } = useContext(UserContext);
+  const { setUser, setUserType } = useContext(UserContext);
 
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -16,7 +16,7 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(email, password, userType);
+    // console.log(email, password, type);
 
     axios
       .post(`/api/${type}/login`, {

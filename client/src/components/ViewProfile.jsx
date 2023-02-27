@@ -6,10 +6,10 @@ import tractor from "../assets/tractor.jpg";
 const ViewProfile = () => {
   const params = useParams();
   const [user, setUser] = useState({});
-  useEffect(() => {
-    const type = params.type;
-    const email = params.profileId;
+  const type = params.type;
+  const email = params.profileId;
 
+  useEffect(() => {
     axios
       .get(`/profile/${type}/${email}`)
       .then((response) => {
@@ -19,7 +19,7 @@ const ViewProfile = () => {
       .catch((err) => {
         console.log(err.response.data);
       });
-  }, []);
+  }, [email, type]);
   return (
     <div className="lg:w-[75%] mx-auto h-full p-2 my-10 w-[85%]">
       <div className="h-[50%] md:h-[60%] relative">
