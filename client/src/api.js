@@ -5,7 +5,7 @@ let reqInstance = axios.create({
   headers: {
     token: `${token}`,
   },
-  baseURL: "http://localhost:8000",
+  baseURL: "https://farm-works-server.vercel.app/",
 });
 
 export default reqInstance;

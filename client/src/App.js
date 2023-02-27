@@ -16,7 +16,7 @@ import UpdateJob from "./components/UpdateJob";
 import ViewProfile from "./components/ViewProfile";
 import { UserContext } from "./context/UserContext";
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://farm-works-server.vercel.app/";
 // axios.defaults.headers.common["token"] = localStorage.getItem("Authorization");
 function App() {
   const { user, setUser, userType, setUserType } = useContext(UserContext);
