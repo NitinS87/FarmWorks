@@ -15,6 +15,7 @@ const JobPage = () => {
   const [apply, setApply] = useState(false);
   const [comments, setComments] = useState("");
   const [check, setCheck] = useState(false);
+  const [temp, setTemp] = useState(false);
   // console.log(params);
   const url = `/api/jobs/search/${params.id}`;
   useEffect(() => {
@@ -22,22 +23,23 @@ const JobPage = () => {
       axios.get(url).then((response) => {
         setJob(response.data);
         console.log(response.data);
+
+        for (var i = 0; i < job.interested?.length; i++) {
+          if (job.interested[i].id === user.email) {
+            if (temp) {
+              setCheck(false);
+            } else {
+              setCheck(true);
+            }
+            console.log(check);
+            break;
+          }
+        }
       });
     } catch (err) {
       console.log(err);
     }
-    jobLoop();
   }, [url, check, apply]);
-
-  const jobLoop = (e) => {
-    for (var i = 0; i < job?.interested?.length; i++) {
-      console.log(check);
-      if (job.interested[i].id === user.email) {
-        setCheck(true);
-        break;
-      }
-    }
-  };
   const dt1 = new Date(Date.now());
   // const dt2 = new Date(Date(job.createdOn));
   const dt2 = new Date(job.createdOn);
@@ -67,16 +69,14 @@ const JobPage = () => {
   };
   const handleApply = (e) => {
     e.preventDefault();
-    if (check === false) {
-      setApply(!apply);
-    }
+    setApply(true);
   };
 
   const handleApplySubmit = (e) => {
     e.preventDefault();
-    if (check == false) {
-      setApply(!apply);
-    }
+    // if (check == false) {
+    //   setApply(!apply);
+    // }
 
     reqInstance
       .post("/api/jobs/interested", {
@@ -89,9 +89,11 @@ const JobPage = () => {
         console.log(response.data);
         if (check === true) {
           setError(response.data);
+          setTemp(true);
           setCheck(false);
         } else {
           setSuccess(response.data);
+          setTemp(false);
           setCheck(true);
         }
       })
@@ -105,16 +107,17 @@ const JobPage = () => {
       {/* Heading div */}
       {success ? <p className="bg-green-500 p-3 my-2">{success}</p> : null}
       {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
-      <div className="flex shadow-md rounded-md p-5 justify-between items-center ">
-        <div className="flex items-center justify-around">
-          <div className="bg-gray-300 p-2 mx-4">
-            <span className="material-symbols-outlined text-6xl">work</span>
+      <div className="flex flex-col lg:flex-row shadow-md rounded-md p-5 justify-between items-center gap-3">
+        <div className="flex flex-col lg:flex-row items-center justify-around">
+          <div className="flex">
+            <div className="bg-gray-300 p-2 mx-4">
+              <span className="material-symbols-outlined text-6xl">work</span>
+            </div>
+            <div className="mx-4">
+              <h2 className="text-2xl">{job.jobName}</h2>
+              <span className="text-xl">{job.farmerId}</span>
+            </div>
           </div>
-          <div className="mx-4">
-            <h2 className="text-2xl">{job.jobName}</h2>
-            <span className="text-xl">{job.farmerId}</span>
-          </div>
-
           <div className="mx-4">
             <span className="text-[#C0C0C0] text-4xl">Price: &#8377;</span>
             <span className="text-[#C0C0C0] text-4xl">{job.amount}</span>
@@ -129,8 +132,8 @@ const JobPage = () => {
               Delete
             </button>
           </div>
-        ) : userType != "farmer" ? (
-          !check && jobLoop() ? (
+        ) : userType !== "farmer" && user?.email ? (
+          check === false ? (
             <button className="button" onClick={handleApply}>
               Apply For this job
             </button>
@@ -239,51 +242,56 @@ const JobPage = () => {
           <span className="m-1">{job.jobDesc}</span>
         </div>
       </div>
-      <div className="w-[95%] mx-auto flex gap-2">
+      <div className="w-[95%] mx-auto flex lg:flex-row flex-col gap-2">
         {job?.pictures?.map((picture, idx) => {
           console.log(picture);
           return (
-            <div className="flex overflow-auto">
+            <div key={idx} className="overflow-auto">
               <img src={picture} alt="" className="object-cover" />
             </div>
           );
         })}
       </div>
-      <div className="!w-[50%] mx-auto">
-        <div className="flex-col justify-around ml-2 mt-10 bg-[#fafafa] ">
-          <div className="px-5 py-2 flex items-center gap-1">
-            <span className="material-symbols-outlined">thumbs_up_down</span>
-            <h1 className="m-1 font-bold text-xl text-gray-400">Interested</h1>
-          </div>
-          <div className="mx-2">
-            {job.interested?.map((interest, idx) => {
-              console.log(interest);
-              return (
-                <div key={idx} className="flex gap-2 items-center">
-                  <div className="border-r px-2">
-                    <h1>{idx + 1}.</h1>
+      {job.farmerId === user?.email ? (
+        <div className="!w-[50%] mx-auto">
+          <div className="flex-col justify-around ml-2 mt-10 bg-[#fafafa] ">
+            <div className="px-5 py-2 flex items-center gap-1">
+              <span className="material-symbols-outlined">thumbs_up_down</span>
+              <h1 className="m-1 font-bold text-xl text-gray-400">
+                Interested
+              </h1>
+            </div>
+
+            <div className="mx-2">
+              {job.interested?.map((interest, idx) => {
+                // console.log(interest);
+                return (
+                  <div key={idx} className="flex gap-2 items-center">
+                    <div className="border-r px-2">
+                      <h1>{idx + 1}.</h1>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                      <span className="material-symbols-outlined p-2">
+                        group_add
+                      </span>
+                      <h1>{interest.id}</h1>
+                    </div>
+                    <div className="flex gap-2">
+                      <span className="text-gray-500">Comments: </span>
+                      <h1>{interest.comments}</h1>
+                    </div>
+                    <div>
+                      <Link to={`/profile/${interest.type}/${interest.id}`}>
+                        <button className="button">View Details</button>
+                      </Link>
+                    </div>
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <span className="material-symbols-outlined p-2">
-                      group_add
-                    </span>
-                    <h1>{interest.id}</h1>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="text-gray-500">Comments: </span>
-                    <h1>{interest.comments}</h1>
-                  </div>
-                  <div>
-                    <Link to={`/profile/${interest.type}/${interest.id}`}>
-                      <button className="button">View Details</button>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
       {/* Side-drawer Menu */}
       <div
         className={
@@ -322,7 +330,7 @@ const JobPage = () => {
                 description
               </span>
               <textarea
-                className="w-[100%] outline-none h-24 resize-y"
+                className="w-full outline-none h-24 resize-y"
                 placeholder="Comments - (minimum 100 words)"
                 onChange={(e) => setComments(e.target.value)}
                 value={comments}
@@ -330,7 +338,14 @@ const JobPage = () => {
             </div>
 
             <div className="w-full flex justify-center items-center mt-4">
-              <button className="button mx-auto" onClick={handleApplySubmit}>
+              <button
+                className="button mx-auto"
+                onClick={(e) => {
+                  setApply(false);
+                  console.log(apply);
+                  handleApplySubmit(e);
+                }}
+              >
                 Apply for job!
               </button>
             </div>

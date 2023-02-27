@@ -88,8 +88,8 @@ const CreateJob = () => {
   );
 
   const handleLocationCLicked = () => {
-    // console.log("clicked");
-    navigator.geolocation.watchPosition(function (position) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("clicked");
       // console.log("Latitude is :", position.coords.latitude);
       // console.log("Longitude is :", position.coords.longitude);
       setCoordinates({
@@ -102,18 +102,18 @@ const CreateJob = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(
-      jobName,
-      jobDesc,
-      completionDays,
-      land,
-      amount,
-      coordinates,
-      jobOptions,
-      images
-    );
+    // console.log(
+    //   jobName,
+    //   jobDesc,
+    //   completionDays,
+    //   land,
+    //   amount,
+    //   coordinates,
+    //   jobOptions,
+    //   images
+    // );
 
-    console.log(user);
+    // console.log(user);
     reqInstance
       .post(`/api/jobs/create`, {
         farmerId: user.email,
@@ -136,6 +136,8 @@ const CreateJob = () => {
         console.log(err.response.data);
       });
   };
+
+  var [minAmount, setMinAmount] = useState(0);
 
   if (user) {
     return (
@@ -160,6 +162,7 @@ const CreateJob = () => {
                   type="text"
                   placeholder="Title"
                   value={jobName}
+                  required
                   onChange={(e) => setJobName(e.target.value)}
                 />
               </div>
@@ -172,6 +175,7 @@ const CreateJob = () => {
                   className="w-[100%] outline-none h-24 resize-y"
                   placeholder="Description - (minimum 100 words)"
                   value={jobDesc}
+                  required
                   onChange={(e) => setJobDesc(e.target.value)}
                 />
               </div>
@@ -183,9 +187,13 @@ const CreateJob = () => {
                 <input
                   className="w-full outline-none"
                   type="number"
+                  required
                   placeholder="Enter work completion days: "
                   value={completionDays}
-                  onChange={(e) => setCompletionDays(e.target.value)}
+                  onChange={(e) => (
+                    setCompletionDays(e.target.value),
+                    setMinAmount(e.target.value * 250)
+                  )}
                 />
               </div>
 
@@ -198,6 +206,7 @@ const CreateJob = () => {
                     className="w-[60%] h-full outline-none"
                     type="number"
                     placeholder="Lands in acres"
+                    required
                     value={land}
                     onChange={(e) => setLand(e.target.value)}
                   />
@@ -212,8 +221,10 @@ const CreateJob = () => {
                 <input
                   className="w-full h-full outline-none"
                   type="number"
-                  placeholder="Amount"
+                  placeholder={`Amount - min ${minAmount} per labour`}
+                  min={minAmount}
                   value={amount}
+                  required
                   onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
@@ -252,6 +263,7 @@ const CreateJob = () => {
                       id="dropzone-file"
                       type="file"
                       multiple
+                      required
                       className="hidden"
                       onChange={handleFileUpload}
                     />
@@ -280,6 +292,7 @@ const CreateJob = () => {
                       <input
                         className="w-full h-full outline-none border p-2"
                         type="number"
+                        required
                         placeholder="Latitude"
                         value={coordinates.lat}
                         disabled
@@ -296,6 +309,7 @@ const CreateJob = () => {
                       <input
                         className="w-full h-full outline-none border p-2"
                         type="number"
+                        required
                         placeholder="Longitude"
                         value={coordinates.long}
                         disabled
@@ -316,6 +330,7 @@ const CreateJob = () => {
                     onChange={(e) => setJobOptions(e.target.value)}
                     className="border outline-none p-2 w-full"
                     placeholder="Select value"
+                    required
                   >
                     <option value="DEFAULT" disabled>
                       Choose a option ...

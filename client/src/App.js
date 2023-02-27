@@ -38,7 +38,7 @@ function App() {
       });
   }, [setUser, setUserType]);
 
-  console.log(user);
+  // console.log(user);
   return (
     <div className="min-w-full min-h-screen overflow-hidden">
       <Navbar />
@@ -56,6 +56,7 @@ function App() {
           element={
             <Jobs
               url={`http://localhost:8000/api/${userType}/interested/${user?.email}`}
+              sliceIndex={6}
             />
           }
         />

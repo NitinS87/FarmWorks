@@ -94,6 +94,7 @@ const Login = () => {
                   onChange={(e) => setType(e.target.value)}
                   className="border outline-none p-2 w-full"
                   placeholder="Select value"
+                  required
                 >
                   <option value="DEFAULT" disabled>
                     Choose a option ...

@@ -101,7 +101,7 @@ router.put("/update/:id", verifyToken, async (req, res) => {
 router.post("/interested", verifyToken, async (req, res) => {
   try {
     const { id, type, comments, jobId } = req.body;
-    console.log(id, type, comments, jobId);
+    // console.log(id, type, comments, jobId);
     const job = await Jobs.findById(jobId);
     var check = false;
     var obj = { id: id, type: type, comments: comments };
@@ -121,7 +121,7 @@ router.post("/interested", verifyToken, async (req, res) => {
       res.status(200).json("Data deleted");
     }
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(500).json(err);
   }
 });
 //DELETE

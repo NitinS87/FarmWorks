@@ -172,10 +172,12 @@ const Register = () => {
               <span className=""></span>
               <input
                 className="w-full h-full outline-none  "
-                type="number"
+                type="tel"
                 placeholder="Aadhar-Number"
                 value={aadharNumber}
                 required
+                maxLength={12}
+                minLength={12}
                 title="Enter correct aadhar number"
                 pattern="[2-9][0-9]{11}"
                 onChange={(e) => setAadharNumber(e.target.value)}
@@ -283,6 +285,7 @@ const Register = () => {
                   onChange={(e) => setUserType(e.target.value)}
                   className="border outline-none p-2 w-full"
                   placeholder="Select value"
+                  required
                 >
                   <option value="DEFAULT" disabled>
                     Choose a option ...

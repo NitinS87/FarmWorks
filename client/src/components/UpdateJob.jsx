@@ -115,6 +115,7 @@ const UpdateJob = () => {
                     type="text"
                     placeholder="Title"
                     value={jobName}
+                    required
                     onChange={(e) => setJobName(e.target.value)}
                   />
                 </div>
@@ -127,6 +128,7 @@ const UpdateJob = () => {
                     className="w-[100%] outline-none h-24 resize-y"
                     placeholder="Description - (minimum 100 words)"
                     value={jobDesc}
+                    required
                     onChange={(e) => setJobDesc(e.target.value)}
                   />
                 </div>
@@ -140,6 +142,7 @@ const UpdateJob = () => {
                     type="number"
                     placeholder="Enter work completion days: "
                     value={completionDays}
+                    required
                     onChange={(e) => setCompletionDays(e.target.value)}
                   />
                 </div>
@@ -157,6 +160,7 @@ const UpdateJob = () => {
                       type="number"
                       placeholder="Lands in acres"
                       value={land}
+                      required
                       onChange={(e) => setLand(e.target.value)}
                     />
                     <span className="w-[40%]">acres</span>
@@ -175,6 +179,7 @@ const UpdateJob = () => {
                     type="number"
                     placeholder="Amount"
                     value={amount}
+                    required
                     onChange={(e) => setAmount(e.target.value)}
                   />
                 </div>
@@ -194,6 +199,7 @@ const UpdateJob = () => {
                         <input
                           className="w-full h-full outline-none border p-2"
                           type="number"
+                          required
                           placeholder="Latitude"
                           value={coordinates.lat}
                           disabled
@@ -210,6 +216,7 @@ const UpdateJob = () => {
                         <input
                           className="w-full h-full outline-none border p-2"
                           type="number"
+                          required
                           placeholder="Longitude"
                           value={coordinates.long}
                           disabled
@@ -229,6 +236,7 @@ const UpdateJob = () => {
                       onChange={(e) => setJobStatus(e.target.value)}
                       className="border outline-none p-2 w-full"
                       placeholder="Select value"
+                      required
                       value={jobStatus}
                     >
                       <option value="DEFAULT" disabled>
@@ -254,6 +262,7 @@ const UpdateJob = () => {
                       onChange={(e) => setJobOptions(e.target.value)}
                       className="border outline-none p-2 w-full"
                       placeholder="Select value"
+                      required
                       value={jobOptions}
                     >
                       <option value="DEFAULT" disabled>
