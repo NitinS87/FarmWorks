@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import reqInstance from "../api";
 
-const Jobs = ({ url, slice }) => {
+const HomePageJobs = ({ url }) => {
   // const { user, setUser } = useContext(LoginContext);
   var [jobs, setJobs] = useState();
   useEffect(() => {
@@ -20,7 +20,7 @@ const Jobs = ({ url, slice }) => {
     <div className="w-[80%] relative mx-auto mb-16">
       <h1 className="text-3xl text-gray-500 p-2">Available Jobs</h1>
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-8 w-full">
-        {jobs?.slice(0, slice)?.map((job, jobIdx) => (
+        {jobs?.slice(0, 6)?.map((job, jobIdx) => (
           <div
             className="lg:h-[100px] w-full h-full mx-auto flex lg:flex-row flex-col justify-center items-center border-x-4 border-x-[#5FBC7C] border lg:px-8 gap-2 lg:gap-10 my-2"
             key={jobIdx}
@@ -62,4 +62,4 @@ const Jobs = ({ url, slice }) => {
   );
 };
 
-export default Jobs;
+export default HomePageJobs;

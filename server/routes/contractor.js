@@ -56,7 +56,7 @@ router.post("/interested", verifyToken, async (req, res) => {
     var check = false;
     var obj = { id: id, type: type, comments: comments };
     for (var i = 0; i < job.interested.length; i++) {
-      if (job.interested[i].id === id) {
+      if (job.interested[i].id === jobId) {
         check = true;
         obj = job.interested[i];
         // console.log(check);
@@ -70,6 +70,16 @@ router.post("/interested", verifyToken, async (req, res) => {
       await Contractor.findByIdAndUpdate(jobId, { $pull: { interested: obj } });
       res.status(200).json("Data deleted");
     }
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+});
+//GET INTERESTED JOBS
+router.get("/interested/:email", verifyToken, async (req, res) => {
+  try {
+    const email = req.params.email;
+    const { interested } = await Contractor.findOne({email});
+    res.status(200).json(interested);
   } catch (err) {
     res.status(500).json(err.message);
   }

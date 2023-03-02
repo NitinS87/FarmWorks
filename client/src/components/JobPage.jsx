@@ -16,30 +16,58 @@ const JobPage = () => {
   const [comments, setComments] = useState("");
   const [check, setCheck] = useState(false);
   const [temp, setTemp] = useState(false);
+
   // console.log(params);
   const url = `/api/jobs/search/${params.id}`;
   useEffect(() => {
-    try {
-      axios.get(url).then((response) => {
-        setJob(response.data);
-        console.log(response.data);
+    // async function fetchData() {
+    //   // Here we are simulating a delay of 2 seconds to mimic data fetching.
+    //   await new Promise((forLoop) => setTimeout(forLoop, 2000));
+    //   setLoading(false);
+    // }
+    // fetchData();
 
-        for (var i = 0; i < job.interested?.length; i++) {
-          if (job.interested[i].id === user.email) {
-            if (temp) {
-              setCheck(false);
-            } else {
-              setCheck(true);
-            }
-            console.log(check);
-            break;
-          }
-        }
-      });
-    } catch (err) {
-      console.log(err);
+    async function loadData() {
+      try {
+        axios.get(url).then((response) => {
+          setJob(response.data);
+          console.log(response.data);
+
+          const jobData = response.data;
+          // fetchData();
+          // console.log("loop");
+
+          var email = user?.email;
+          console.log(user);
+          forLoop(jobData, email);
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, [url, check, apply]);
+
+    async function forLoop(jobData, email) {
+      for (var i = 0; i < jobData.interested?.length; i++) {
+        // console.log("Hey");
+
+        var interestId = jobData.interested[i].id;
+        console.log(email, interestId);
+        if (interestId === email) {
+          // console.log("If checked");
+          if (temp) {
+            // console.log("Hey");
+            setCheck(false);
+          } else {
+            setCheck(true);
+          }
+          console.log(check);
+          break;
+        }
+      }
+    }
+
+    loadData();
+  }, [url, check, apply, user]);
   const dt1 = new Date(Date.now());
   // const dt2 = new Date(Date(job.createdOn));
   const dt2 = new Date(job.createdOn);
@@ -98,10 +126,11 @@ const JobPage = () => {
         }
       })
       .catch((err) => {
-        console.log(err.response.data);
-        setError(err.response.data);
+        console.log(err);
+        setError("Some error has occurred");
       });
   };
+
   return (
     <div className="w-[85%] h-full relative mx-auto my-16">
       {/* Heading div */}
@@ -119,7 +148,7 @@ const JobPage = () => {
             </div>
           </div>
           <div className="mx-4">
-            <span className="text-[#C0C0C0] text-4xl">Price: &#8377;</span>
+            <span className="text-[#C0C0C0] text-4xl">Pay: &#8377;</span>
             <span className="text-[#C0C0C0] text-4xl">{job.amount}</span>
           </div>
         </div>

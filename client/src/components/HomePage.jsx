@@ -1,11 +1,11 @@
 import React from "react";
 import HeroBanner from "./HeroBanner";
-import Jobs from "./Jobs";
+import HomePageJobs from "./HomePageJobs";
 const HomePage = () => {
   return (
     <div className="mx-auto relative flex flex-col gap-10">
       <HeroBanner />
-      <Jobs url="/api/jobs" sliceLast={6}/>
+      <HomePageJobs url="/api/jobs" />
     </div>
   );
 };

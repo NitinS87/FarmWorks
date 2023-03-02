@@ -16,6 +16,8 @@ const Profile = () => {
     localStorage.clear();
     navigate("/");
   };
+
+  console.log(user);
   // console.log(user, userType);
   if (user) {
     return (

@@ -3,6 +3,8 @@ const verifyToken = require("./../middleware/auth");
 const Jobs = require("../model/Jobs.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Contractor = require("../model/Contractor");
+const Labour = require("../model/Labour");
 
 //READ ALL JOBS
 router.get("/", async (req, res) => {
@@ -101,7 +103,7 @@ router.put("/update/:id", verifyToken, async (req, res) => {
 router.post("/interested", verifyToken, async (req, res) => {
   try {
     const { id, type, comments, jobId } = req.body;
-    // console.log(id, type, comments, jobId);
+    console.log(id, type, comments, jobId);
     const job = await Jobs.findById(jobId);
     var check = false;
     var obj = { id: id, type: type, comments: comments };
@@ -113,11 +115,86 @@ router.post("/interested", verifyToken, async (req, res) => {
         break;
       }
     }
+    var jobObj = { jobId: jobId, comments: comments };
     if (!check) {
       await Jobs.findByIdAndUpdate(jobId, { $push: { interested: obj } });
+      if (type === "contractor") {
+        console.log("contractor");
+        try {
+          const result = await Contractor.findOneAndUpdate(
+            { email: id },
+            {
+              $push: { interested: jobObj },
+            }
+          );
+          // console.log(result);
+        } catch (err) {
+          console.log(err);
+          res.status(500).json(err);
+        }
+      }
+      if (type === "labour") {
+        console.log("labour");
+        try {
+          const result = await Labour.findOneAndUpdate(
+            { email: id },
+            {
+              $push: { interested: jobObj },
+            }
+          );
+          // console.log(result);
+        } catch (err) {
+          console.log(err);
+          res.status(500).json(err);
+        }
+      }
+
       res.status(200).json("Data added");
     } else {
+      var jObj={};
       await Jobs.findByIdAndUpdate(jobId, { $pull: { interested: obj } });
+      console.log(type);
+      if (type === "contractor") {
+        console.log("contractor");
+        const user = await Contractor.findOne({ email: id });
+        console.log(user);
+        for (var i = 0; i < user?.interested.length; i++) {
+          console.log(user?.interested[i]?.jobId ,jobId);
+          if (user?.interested[i]?.jobId === jobId) {
+            // check = true;
+            jObj = user.interested[i];
+            console.log(jObj);
+            break;
+          }
+        }
+        try {
+          const result = await Contractor.findOneAndUpdate(
+            { email: id },
+            {
+              $pull: { interested: jObj },
+            }
+          );
+          // console.log(result);
+        } catch (err) {
+          console.log(err);
+          res.status(500).json(err);
+        }
+      }
+      if (type === "labour") {
+        console.log("labour");
+        try {
+          const result = await Labour.findOneAndUpdate(
+            { email: id },
+            {
+              $pull: { interested: jobObj },
+            }
+          );
+          // console.log(result);
+        } catch (err) {
+          console.log(err);
+          res.status(500).json(err);
+        }
+      }
       res.status(200).json("Data deleted");
     }
   } catch (err) {

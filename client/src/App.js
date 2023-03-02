@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import reqInstance from "./api";
 import AppliedJobs from "./components/AppliedJobs";
@@ -15,12 +15,18 @@ import Register from "./components/Register";
 import UpdateJob from "./components/UpdateJob";
 import ViewProfile from "./components/ViewProfile";
 import { UserContext } from "./context/UserContext";
+// import loader from "./assets/loader.gif";
+import HomePageJobs from "./components/HomePageJobs";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+import TermsAndConditions from "./components/TermsAndConditions";
 
-axios.defaults.baseURL = "https://farm-works-server.vercel.app/";
+// axios.defaults.baseURL = "https://farm-works-server.vercel.app/";
+axios.defaults.baseURL = "http://localhost:8000";
 // axios.defaults.headers.common["token"] = localStorage.getItem("Authorization");
 function App() {
   const { user, setUser, userType, setUserType } = useContext(UserContext);
 
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     // const userData = JSON.parse(localStorage.getItem("User"));
     // // console.log(localStorage.getItem("User"));
@@ -30,46 +36,65 @@ function App() {
     // // console.log(localStorage.getItem("Type"));
     // // console.log(type);
     // if (type != null) setUserType(type);
-    var token = localStorage.getItem("Authorization");
-    if (token)
-      reqInstance.get("/profile").then((response) => {
-        setUser(response.data.user);
-        setUserType(response.data.type);
-      });
+    async function loadData() {
+      var token = localStorage.getItem("Authorization");
+      if (token)
+        reqInstance.get("/profile").then((response) => {
+          setUser(response.data.user);
+          setUserType(response.data.type);
+        });
+      setLoading(false);
+    }
+
+    loadData();
   }, [setUser, setUserType]);
 
   // console.log(user);
-  return (
-    <div className="min-w-full min-h-screen overflow-hidden">
-      <Navbar />
-      <Routes>
-        <Route path="/" exact element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/jobs/:id" element={<JobPage />} />
-        <Route path="/account" element={<Profile />} />
-        <Route path="/create" element={<CreateJob />} />
-        <Route path="/update/:id" element={<UpdateJob />} />
-        <Route path="/profile/:type/:profileId" element={<ViewProfile />} />
-        <Route
-          path="/appliedJobs"
-          element={
-            <Jobs
-              url={`http://localhost:8000/api/${userType}/interested/${user?.email}`}
-              sliceIndex={6}
-            />
-          }
-        />
-        <Route
-          path="/userJobs"
-          element={
-            <Jobs url={`http://localhost:8000/api/jobs/find/${user?.email}`} />
-          }
-        />
-      </Routes>
-      <Footer />
-    </div>
-  );
+  if (loading === true) {
+    console.log("Loading...");
+    return (
+      <div>
+        <LoadingScreen />
+      </div>
+    );
+  } else {
+    return (
+      <div className="min-w-full min-h-screen overflow-hidden">
+        <Navbar />
+        <Routes>
+          <Route path="/" exact element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/jobs/home" element={<HomePageJobs />} />
+          <Route path="/jobs/:id" element={<JobPage />} />
+          <Route path="/account" element={<Profile />} />
+          <Route path="/create" element={<CreateJob />} />
+          <Route path="/update/:id" element={<UpdateJob />} />
+          <Route path="/appliedJobs" element={<AppliedJobs />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/profile/:type/:profileId" element={<ViewProfile />} />
+          <Route
+            path="/appliedJobs"
+            element={
+              <Jobs
+                url={`http://localhost:8000/api/${userType}/interested/${user?.email}`}
+                sliceIndex={6}
+              />
+            }
+          />
+          <Route
+            path="/userJobs"
+            element={
+              <Jobs
+                url={`http://localhost:8000/api/jobs/find/${user?.email}`}
+              />
+            }
+          />
+        </Routes>
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;

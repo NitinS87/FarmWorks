@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
     } else {
       var userEmail = user.email;
       var isMatch = await bcrypt.compare(req.body.password, user.password);
-      if (!isMatch) return res.status(400).json("invalid id or pass");
+      if (!isMatch) return res.status(400).json("Invalid id or pass");
       var type = "farmer";
       var token = jwt.sign({ userEmail, type }, process.env.JWT_SECRET);
       delete user.password;

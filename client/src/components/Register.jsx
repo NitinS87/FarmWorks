@@ -312,9 +312,17 @@ const Register = () => {
                 onChange={() => setAccepts(!accepts)}
                 className="mr-2"
               />
-              <label htmlFor="terms">
+              <label htmlFor="terms" className="cursor-pointer">
                 I agree with all the terms and conditions.
               </label>
+              <Link
+                to="/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline hover:text-[#52C075]"
+              >
+                <span class="material-symbols-outlined text-lg">info</span>
+              </Link>
               <br />
             </div>
 

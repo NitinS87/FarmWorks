@@ -15,7 +15,13 @@ const Navbar = () => {
         <div className="flex md:w-full justify-between items-center mx-3 w-1/3">
           {user?.name ? (
             <div className="hidden md:flex border-x border-x-gray-500 w-[90%] h-[95%] items-center">
-              {userType === "labour" ? null : (
+              {userType === "labour" ? (
+                <div className="text-base py-2 px-3">
+                  <Link to="/appliedJobs" className="hover:text-[#5FBC7C]">
+                    Applied Jobs
+                  </Link>
+                </div>
+              ) : (
                 <div className="text-base py-2 px-3">
                   <Link to="/create" className="hover:text-[#5FBC7C]">
                     Create a Job
@@ -28,6 +34,13 @@ const Navbar = () => {
                   Show my Jobs
                 </Link>
               </div>
+              {userType === "contractor" ? (
+                <div className="text-base py-2 px-3">
+                  <Link to="/appliedJobs" className="hover:text-[#5FBC7C]">
+                    Applied Jobs
+                  </Link>
+                </div>
+              ) : null}
             </div>
           ) : (
             <div className="hidden md:flex border-x border-x-gray-500 w-[80%] h-[95%] items-center">
