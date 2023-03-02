@@ -84,7 +84,7 @@ const Navbar = () => {
               <span className="text-base">{user.name}</span>
             </Link>
           ) : (
-            <div className="flex mx-2">
+            <div className="mx-2 hidden md:flex">
               <Link to="/login">
                 <button className="border border-[#1c8249] lg:py-2 lg:px-6 mr-2 hover:text-[#1c8249] p-1 duration-300 ease-in-out hover:border-black hover:scale-105">
                   Login
@@ -157,7 +157,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <li className="border-b py-6">
+                <li className="border-b-2 py-6">
                   <Link
                     to="/login"
                     className="hover:text-[#5FBC7C]"
@@ -166,9 +166,22 @@ const Navbar = () => {
                     I'm Farmer
                   </Link>
                 </li>
-                <li className="border-b py-6">
-                  <Link to="/account" onClick={handleNav}>
-                    Account
+                <li className="border-b-2 py-6">
+                  <Link
+                    to="/login"
+                    className="hover:text-[#5FBC7C]"
+                    onClick={handleNav}
+                  >
+                    I'm Contractor
+                  </Link>
+                </li>
+                <li className="border-b-2 py-6">
+                  <Link
+                    to="/login"
+                    className="hover:text-[#5FBC7C]"
+                    onClick={handleNav}
+                  >
+                    I'm Labour
                   </Link>
                 </li>
               </>
