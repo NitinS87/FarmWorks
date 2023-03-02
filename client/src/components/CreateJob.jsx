@@ -28,7 +28,7 @@ const CreateJob = () => {
   useEffect(() => {
     async function fetchData() {
       // Here we are simulating a delay of 2 seconds to mimic data fetching.
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setLoading(false);
     }
 

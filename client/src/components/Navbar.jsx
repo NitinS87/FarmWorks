@@ -1,9 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { UserContext } from "../context/UserContext";
 const Navbar = () => {
   const { user, userType } = useContext(UserContext);
+  const [nav, setNav] = useState(false);
+  const handleNav = () => {
+    setNav(!nav);
+    if (!nav) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  };
   return (
     <div className="w-full shadow-md text-lg">
       <nav className="w-[85%] h-[20%] flex mx-auto justify-between md:justify-start">
@@ -22,18 +31,20 @@ const Navbar = () => {
                   </Link>
                 </div>
               ) : (
-                <div className="text-base py-2 px-3">
-                  <Link to="/create" className="hover:text-[#5FBC7C]">
-                    Create a Job
-                  </Link>
-                </div>
-              )}
+                <>
+                  <div className="text-base py-2 px-3">
+                    <Link to="/create" className="hover:text-[#5FBC7C]">
+                      Create a Job
+                    </Link>
+                  </div>
 
-              <div className="text-base py-2 px-3">
-                <Link to="/userJobs" className="hover:text-[#5FBC7C]">
-                  Show my Jobs
-                </Link>
-              </div>
+                  <div className="text-base py-2 px-3">
+                    <Link to="/userJobs" className="hover:text-[#5FBC7C]">
+                      Show my Jobs
+                    </Link>
+                  </div>
+                </>
+              )}
               {userType === "contractor" ? (
                 <div className="text-base py-2 px-3">
                   <Link to="/appliedJobs" className="hover:text-[#5FBC7C]">
@@ -65,7 +76,7 @@ const Navbar = () => {
           {user?.name ? (
             <Link
               to="/account"
-              className="mr-16 flex items-center justify-evenly mx-2"
+              className="mr-1 flex items-center justify-evenly"
             >
               <span className="material-symbols-outlined text-2xl lg:text-4xl p-1 rounded-full">
                 account_circle
@@ -86,6 +97,100 @@ const Navbar = () => {
               </Link>
             </div>
           )}
+        </div>
+        {/* Menu Icon */}
+        <div
+          onClick={handleNav}
+          className="block md:hidden cursor-pointer z-10 mt-6"
+        >
+          {nav ? (
+            <span className="material-symbols-outlined">close</span>
+          ) : (
+            <span className="material-symbols-outlined">menu</span>
+          )}
+        </div>
+        {/* Mobile Menu */}
+        <div
+          className={
+            nav
+              ? "md:hidden fixed left-0 top-20 flex flex-col items-center justify-between w-full h-[90%] bg-white duration-300 z-10 overflow-hidden text-black"
+              : "fixed left-[100%] top-20 h-[90%] w-full flex flex-col items-center justify-between ease-in duration-300 text-black"
+          }
+        >
+          <ul className="w-full p-4">
+            {user?.name ? (
+              <>
+                <li className="border-b-2 py-6">
+                  <Link
+                    to="/appliedJobs"
+                    className="hover:text-[#5FBC7C] text-xl font-medium flex mx-1 items-center"
+                    onClick={handleNav}
+                  >
+                    <span className="material-symbols-outlined mr-2">
+                      work_history
+                    </span>
+                    Applied Jobs
+                  </Link>
+                </li>
+                <li className="border-b-2 py-6">
+                  <Link
+                    to="/create"
+                    className="hover:text-[#5FBC7C] text-xl font-medium flex mx-1 items-center"
+                    onClick={handleNav}
+                  >
+                    <span className="material-symbols-outlined mr-2">
+                      edit_note
+                    </span>
+                    Create a Job
+                  </Link>
+                </li>
+                <li className="border-b-2 py-6">
+                  <Link
+                    to="/userJobs"
+                    className="hover:text-[#5FBC7C] text-xl font-medium flex mx-1 items-center"
+                    onClick={handleNav}
+                  >
+                    <span className="material-symbols-outlined mr-2">work</span>
+                    Show my Jobs
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="border-b py-6">
+                  <Link
+                    to="/login"
+                    className="hover:text-[#5FBC7C]"
+                    onClick={handleNav}
+                  >
+                    I'm Farmer
+                  </Link>
+                </li>
+                <li className="border-b py-6">
+                  <Link to="/account" onClick={handleNav}>
+                    Account
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+
+          <div className="flex flex-col w-full p-4">
+            {user?.name ? null : (
+              <>
+                <Link to="/signin" onClick={handleNav}>
+                  <button className="w-full my-2 p-3 button text-primary border border-secondary rounded-2xl shadow-xl">
+                    Sign In
+                  </button>
+                </Link>
+                <Link to="/signup" onClick={handleNav}>
+                  <button className="w-full my-2 p-3 button text-btnText rounded-2xl shadow-xl">
+                    Sign Up
+                  </button>
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </nav>
     </div>
