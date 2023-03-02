@@ -160,6 +160,7 @@ const Register = () => {
                 placeholder="Password"
                 value={password}
                 required
+                minLength={8}
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
               />

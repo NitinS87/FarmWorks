@@ -81,6 +81,7 @@ const Login = () => {
                 autoComplete="current-password"
                 value={password}
                 name="password"
+                minLength={8}
                 required
                 onChange={(e) => setPassword(e.target.value)}
               />

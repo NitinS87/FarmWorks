@@ -28,12 +28,13 @@ const CreateJob = () => {
   useEffect(() => {
     async function fetchData() {
       // Here we are simulating a delay of 2 seconds to mimic data fetching.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       setLoading(false);
     }
 
     fetchData();
-  }, []);
+    console.log(user);
+  }, [user]);
   const uploadAllToCloudinary = async (files, onUploadProgress) => {
     const uploadedImageUrls = [];
     for (let i = 0; i < files.length; i++) {
@@ -153,7 +154,7 @@ const CreateJob = () => {
 
   if (loading === true) {
     console.log("Loading...");
-    <div>
+    <div className="w-full h-full">
       <LoadingScreen />;
     </div>;
   } else {

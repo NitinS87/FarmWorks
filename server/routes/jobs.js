@@ -151,7 +151,7 @@ router.post("/interested", verifyToken, async (req, res) => {
 
       res.status(200).json("Data added");
     } else {
-      var jObj={};
+      var jObj = {};
       await Jobs.findByIdAndUpdate(jobId, { $pull: { interested: obj } });
       console.log(type);
       if (type === "contractor") {
@@ -159,7 +159,7 @@ router.post("/interested", verifyToken, async (req, res) => {
         const user = await Contractor.findOne({ email: id });
         console.log(user);
         for (var i = 0; i < user?.interested.length; i++) {
-          console.log(user?.interested[i]?.jobId ,jobId);
+          console.log(user?.interested[i]?.jobId, jobId);
           if (user?.interested[i]?.jobId === jobId) {
             // check = true;
             jObj = user.interested[i];
@@ -181,12 +181,23 @@ router.post("/interested", verifyToken, async (req, res) => {
         }
       }
       if (type === "labour") {
-        console.log("labour");
+        console.log("contractor");
+        const user = await Labour.findOne({ email: id });
+        console.log(user);
+        for (var i = 0; i < user?.interested.length; i++) {
+          console.log(user?.interested[i]?.jobId, jobId);
+          if (user?.interested[i]?.jobId === jobId) {
+            // check = true;
+            jObj = user.interested[i];
+            console.log(jObj);
+            break;
+          }
+        }
         try {
           const result = await Labour.findOneAndUpdate(
             { email: id },
             {
-              $pull: { interested: jobObj },
+              $pull: { interested: jObj },
             }
           );
           // console.log(result);

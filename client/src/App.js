@@ -20,8 +20,8 @@ import HomePageJobs from "./components/HomePageJobs";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 import TermsAndConditions from "./components/TermsAndConditions";
 
-axios.defaults.baseURL = "https://farm-works-server.vercel.app/";
-// axios.defaults.baseURL = "http://localhost:8000";
+// axios.defaults.baseURL = "https://farm-works-server.vercel.app/";
+axios.defaults.baseURL = "http://localhost:8000";
 // axios.defaults.headers.common["token"] = localStorage.getItem("Authorization");
 function App() {
   const { user, setUser, userType, setUserType } = useContext(UserContext);
@@ -73,22 +73,10 @@ function App() {
           <Route path="/appliedJobs" element={<AppliedJobs />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/profile/:type/:profileId" element={<ViewProfile />} />
-          <Route
-            path="/appliedJobs"
-            element={
-              <Jobs
-                url={`api/${userType}/interested/${user?.email}`}
-                sliceIndex={6}
-              />
-            }
-          />
+          <Route path="/showAllJobs" element={<Jobs url={`api/jobs/`} />} />
           <Route
             path="/userJobs"
-            element={
-              <Jobs
-                url={`http://localhost:8000/api/jobs/find/${user?.email}`}
-              />
-            }
+            element={<Jobs url={`api/jobs/find/${user?.email}`} />}
           />
         </Routes>
         <Footer />

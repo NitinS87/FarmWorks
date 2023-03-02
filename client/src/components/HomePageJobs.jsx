@@ -58,6 +58,11 @@ const HomePageJobs = ({ url }) => {
           </div>
         ))}
       </div>
+      <div className="mx-auto mt-4">
+        <Link to="/showAllJobs">
+          <button className="button">View all jobs</button>
+        </Link>
+      </div>
     </div>
   );
 };

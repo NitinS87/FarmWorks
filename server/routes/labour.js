@@ -54,7 +54,7 @@ router.post("/interested", verifyToken, async (req, res) => {
   try {
     const { email, type, comments, jobId } = req.body;
     console.log(email, type, comments, jobId);
-    const labour = await Labour.findOne(email);
+    const labour = await Labour.findOne({email});
     var check = false;
     var obj = { jobId: jobId, type: type, comments: comments };
     for (var i = 0; i < labour.interested.length; i++) {
@@ -66,10 +66,10 @@ router.post("/interested", verifyToken, async (req, res) => {
       }
     }
     if (!check) {
-      await Labour.findOneAndUpdate(email, { $push: { interested: obj } });
+      await Labour.findOneAndUpdate({email}, { $push: { interested: obj } });
       res.status(200).json("Data added");
     } else {
-      await Labour.findOneAndUpdate(email, { $pull: { interested: obj } });
+      await Labour.findOneAndUpdate({email}, { $pull: { interested: obj } });
       res.status(200).json("Data deleted");
     }
   } catch (err) {
@@ -80,7 +80,7 @@ router.post("/interested", verifyToken, async (req, res) => {
 router.get("/interested/:email", verifyToken, async (req, res) => {
   try {
     const email = req.params.email;
-    const { interested } = await Labour.findOne(email);
+    const { interested } = await Labour.findOne({email});
     res.status(200).json(interested);
   } catch (err) {
     res.status(500).json(err.message);
