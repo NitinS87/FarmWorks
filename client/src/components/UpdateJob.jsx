@@ -14,6 +14,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import reqInstance from "../api";
 import { UserContext } from "../context/UserContext";
+import { State, City } from "country-state-city";
 
 const UpdateJob = () => {
   const [job, setJob] = useState("");
@@ -32,6 +33,14 @@ const UpdateJob = () => {
   const [jobStatus, setJobStatus] = useState("");
   //   const [latitude, setLatitude] = useState("");
   //   const [longitude, setLongitude] = useState("");
+
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+
+  const states = State.getStatesOfCountry("IN");
+  // console.log(states);
+  const cities = City.getCitiesOfState("IN", state);
+  // console.log(cities);
 
   navigator.geolocation.watchPosition(function (position) {
     // console.log("Latitude is :", position.coords.latitude);
@@ -53,6 +62,8 @@ const UpdateJob = () => {
       setJobOptions(response.data.jobOptions);
       setJobStatus(response.data.jobOptions);
       setJob(response.data);
+      setState(response.data.state);
+      setCity(response.data.city);
     });
   }, [params.id]);
 
@@ -91,6 +102,8 @@ const UpdateJob = () => {
         coordinates: coordinates,
         jobOptions: jobOptions,
         status: jobStatus,
+        state: state,
+        city: city,
       })
       .then((d) => {
         console.log(d.data);
@@ -177,6 +190,52 @@ const UpdateJob = () => {
                     required
                     onChange={(e) => setAmount(e.target.value)}
                   />
+                </div>
+                <div className="border flex items-center p-2 mt-4">
+                  <span className="flex mr-4 items-center w-1/2">
+                    <MdOutlineHome className="text-3xl mr-4 ml-2" />
+                    <span className="flex justify-start w-full">
+                      <select
+                        className="border outline-none p-2 w-full"
+                        id="state"
+                        name="location"
+                        value={state}
+                        required
+                        onChange={(e) => setState(e.target.value)}
+                      >
+                        <option className="mx-auto w-11" value="select">
+                          State
+                        </option>
+                        {states.map((d, idx) => (
+                          <option key={idx} value={d.isoCode}>
+                            {d.name}
+                          </option>
+                        ))}
+                      </select>
+                    </span>
+                  </span>
+
+                  <span className="flex items-center w-1/2">
+                    <MdOutlineHome className="text-3xl mr-4 ml-2" />
+                    <span className="flex justify-start w-full">
+                      <select
+                        className="border outline-none p-2 w-full"
+                        name="location"
+                        value={city}
+                        required
+                        onChange={(e) => setCity(e.target.value)}
+                      >
+                        <option className="mx-auto w-11" value="select">
+                          City
+                        </option>
+                        {cities.map((d, idx) => (
+                          <option key={idx} value={d.isoCode}>
+                            {d.name}
+                          </option>
+                        ))}
+                      </select>
+                    </span>
+                  </span>
                 </div>
 
                 <div className="p-2 mt-4 border rounded-md">
