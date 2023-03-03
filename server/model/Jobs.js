@@ -63,6 +63,14 @@ const JobsSchema = new mongoose.mongoose.Schema({
     type: Array,
     default: [],
   },
+  state: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
   // review: {
   //   type: Object,
   //   default: {},

@@ -3,6 +3,18 @@ import HeroBanner from "./HeroBanner";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { State, City } from "country-state-city";
+import {
+  MdCall,
+  MdOutlineBadge,
+  MdOutlineDescription,
+  MdOutlineHome,
+  MdOutlineInfo,
+  MdOutlineLock,
+  MdPersonOutline,
+} from "react-icons/md";
+import { FiDatabase } from "react-icons/fi";
+import { HiOutlinePhotograph } from "react-icons/hi";
+import { RiUploadCloud2Line } from "react-icons/ri";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -123,7 +135,7 @@ const Register = () => {
             {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
 
             <div className="border flex items-center p-2 mt-4 rounded-md">
-              <span className="material-symbols-outlined mr-4 ml-2">badge</span>
+              <MdOutlineBadge className="text-3xl mr-4 ml-2" />
               <span className=""></span>
               <input
                 className="w-[100%] outline-none"
@@ -136,7 +148,7 @@ const Register = () => {
             </div>
 
             <div className="border flex items-center p-2 mt-4 rounded-md">
-              <span className="material-symbols-outlined mr-4 ml-2">mail</span>
+              <MdOutlineDescription className="text-3xl mr-4 ml-2" />
               <span className=""></span>
               <input
                 className="w-[100%] outline-none"
@@ -150,9 +162,7 @@ const Register = () => {
             </div>
 
             <div className="border flex items-center p-2 mt-4 rounded-md">
-              <span className="material-symbols-outlined mr-4 ml-2">
-                <span className="material-symbols-outlined"> lock_open </span>
-              </span>
+              <MdOutlineLock className="text-3xl mr-4 ml-2" />
               <span className=""></span>
               <input
                 className="w-full outline-none "
@@ -167,9 +177,7 @@ const Register = () => {
             </div>
 
             <div className="border flex items-center p-2 mt-4 focus:border rounded-md">
-              <span className="material-symbols-outlined mr-4 ml-2">
-                <span className="material-symbols-outlined"> demography </span>
-              </span>
+              <FiDatabase className="text-3xl mr-4 ml-2" />
               <span className=""></span>
               <input
                 className="w-full h-full outline-none  "
@@ -186,9 +194,7 @@ const Register = () => {
             </div>
 
             <div className="border flex items-center p-2 mt-4 rounded-md">
-              <span className="material-symbols-outlined mr-4 ml-2">
-                <span className="material-symbols-outlined"> call </span>
-              </span>
+              <MdCall className="text-3xl mr-4 ml-2" />
               <span className=""></span>
               <input
                 className="w-[100%] outline-none"
@@ -204,7 +210,7 @@ const Register = () => {
 
             <div className="border flex items-center p-2 mt-4">
               <span className="flex mr-4 items-center w-1/2">
-                <span className="material-symbols-outlined mx-2"> home </span>
+                <MdOutlineHome className="text-3xl mr-4 ml-2" />
                 <span className="flex justify-start w-full">
                   <select
                     className="border outline-none p-2 w-full"
@@ -227,7 +233,7 @@ const Register = () => {
               </span>
 
               <span className="flex items-center w-1/2">
-                <span className="material-symbols-outlined mx-2"> home </span>
+                <MdOutlineHome className="text-3xl mr-4 ml-2" />
                 <span className="flex justify-start w-full">
                   <select
                     className="border outline-none p-2 w-full"
@@ -251,11 +257,7 @@ const Register = () => {
 
             <div className="border flex-col items-center p-2 mt-4 rounded-md">
               <div className="flex">
-                <span className="material-symbols-outlined mr-4 ml-2">
-                  <span className="material-symbols-outlined">
-                    photo_camera
-                  </span>
-                </span>
+                <HiOutlinePhotograph className="text-3xl mr-4 ml-2" />
                 <input
                   className="w-[100%] outline-none"
                   type="file"
@@ -267,9 +269,7 @@ const Register = () => {
                   className="p-2 border rounded-md flex items-center"
                   onClick={submitImage}
                 >
-                  <span className="material-symbols-outlined">
-                    cloud_upload
-                  </span>
+                  <RiUploadCloud2Line className="text-2xl"/>
                   Upload
                 </button>
               </div>
@@ -279,7 +279,7 @@ const Register = () => {
             </div>
 
             <div className="border flex items-center p-2 mt-4">
-              <span className="material-symbols-outlined mx-2">person</span>
+              <MdPersonOutline className="text-3xl mr-4 ml-2" />
               <span className="flex justify-start w-full">
                 <select
                   defaultValue={"DEFAULT"}
@@ -322,7 +322,9 @@ const Register = () => {
                 rel="noopener noreferrer"
                 className="hover:underline hover:text-[#52C075]"
               >
-                <span class="material-symbols-outlined text-lg">info</span>
+                <span className="material-symbols-outlined text-2xl">
+                  <MdOutlineInfo />
+                </span>
               </Link>
               <br />
             </div>

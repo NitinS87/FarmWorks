@@ -1,5 +1,16 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import {
+  MdOutlineAvTimer,
+  MdOutlineBadge,
+  MdOutlineDescription,
+  MdOutlineHome,
+  MdOutlineLandscape,
+  MdOutlineLocationOn,
+  MdOutlinePriceCheck,
+  MdPersonOutline,
+  MdFilterList,
+} from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import reqInstance from "../api";
 import { UserContext } from "../context/UserContext";
@@ -107,9 +118,7 @@ const UpdateJob = () => {
 
                 {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
                 <div className="border flex items-center p-2 mt-4 rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    badge
-                  </span>
+                  <MdOutlineBadge className="text-3xl mr-4 ml-2" />
                   <input
                     className="w-[100%] outline-none"
                     type="text"
@@ -121,9 +130,7 @@ const UpdateJob = () => {
                 </div>
 
                 <div className="border flex items-center p-2 mt-4 rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    description
-                  </span>
+                  <MdOutlineDescription className="text-3xl mr-4 ml-2" />
                   <textarea
                     className="w-[100%] outline-none h-24 resize-y"
                     placeholder="Description - (minimum 100 words)"
@@ -134,9 +141,7 @@ const UpdateJob = () => {
                 </div>
 
                 <div className="border flex items-center p-2 mt-4 rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    <span className="material-symbols-outlined"> update </span>
-                  </span>
+                  <MdOutlineAvTimer className="text-3xl mr-4 ml-2" />
                   <input
                     className="w-full outline-none"
                     type="number"
@@ -148,12 +153,7 @@ const UpdateJob = () => {
                 </div>
 
                 <div className="border flex items-center p-2 mt-4 focus:border rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    <span className="material-symbols-outlined">
-                      {" "}
-                      landscape{" "}
-                    </span>
-                  </span>
+                  <MdOutlineLandscape className="text-3xl mr-4 ml-2" />
                   <div className=" w-full flex justify-evenly items-center gap-5">
                     <input
                       className="w-[60%] h-full outline-none"
@@ -168,12 +168,7 @@ const UpdateJob = () => {
                 </div>
 
                 <div className="border flex items-center p-2 mt-4 focus:border rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    <span className="material-symbols-outlined">
-                      {" "}
-                      payments{" "}
-                    </span>
-                  </span>
+                  <MdOutlinePriceCheck className="text-3xl mr-4 ml-2" />
                   <input
                     className="w-full h-full outline-none"
                     type="number"
@@ -191,10 +186,7 @@ const UpdateJob = () => {
                   </span>
                   <div className="border flex items-center p-2 mt-4">
                     <span className="flex mr-4 items-center w-1/2">
-                      <span className="material-symbols-outlined mx-2">
-                        {" "}
-                        home{" "}
-                      </span>
+                      <MdOutlineHome className="text-3xl mr-4 ml-2" />
                       <span className="flex justify-start w-full">
                         <input
                           className="w-full h-full outline-none border p-2"
@@ -208,10 +200,7 @@ const UpdateJob = () => {
                     </span>
 
                     <span className="flex items-center w-1/2">
-                      <span className="material-symbols-outlined mx-2">
-                        {" "}
-                        home{" "}
-                      </span>
+                      <MdOutlineHome className="text-3xl mr-4 ml-2" />
                       <span className="flex justify-start w-full">
                         <input
                           className="w-full h-full outline-none border p-2"
@@ -227,9 +216,7 @@ const UpdateJob = () => {
                 </div>
 
                 <div className="border flex items-center p-2 mt-4">
-                  <span className="material-symbols-outlined mx-2">
-                    filter_list
-                  </span>
+                  <MdFilterList className="text-3xl mr-4 ml-2" />
                   <span className="flex justify-start w-full">
                     <select
                       defaultValue={"DEFAULT"}
@@ -255,7 +242,9 @@ const UpdateJob = () => {
                   </span>
                 </div>
                 <div className="border flex items-center p-2 mt-4">
-                  <span className="material-symbols-outlined mx-2">person</span>
+                  <span className="material-symbols-outlined mx-2 text-3xl">
+                    <MdPersonOutline />
+                  </span>
                   <span className="flex justify-start w-full">
                     <select
                       defaultValue={"DEFAULT"}

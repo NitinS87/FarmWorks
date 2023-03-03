@@ -3,6 +3,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import reqInstance from "./../api";
+import {
+  MdCall,
+  MdFilterAlt,
+  MdLandscape,
+  MdOutlineBadge,
+  MdOutlineCalendarToday,
+  MdOutlineDescription,
+  MdOutlineGroupAdd,
+  MdOutlineHome,
+  MdOutlineLocationOn,
+  MdOutlineThumbsUpDown,
+  MdOutlineWorkOutline,
+  MdTimer,
+  MdWorkOutline,
+} from "react-icons/md";
 
 const JobPage = () => {
   var token = localStorage.getItem("Authorization");
@@ -79,22 +94,22 @@ const JobPage = () => {
   // var cl = "button";
   // console.log(user);
 
-  const handleDelete = (e) => {
-    e.preventDefault();
+  // const handleDelete = (e) => {
+  //   e.preventDefault();
 
-    console.log("delete");
-    reqInstance
-      .delete(`/api/jobs/delete/${params.id}`, { token })
-      .then((response) => {
-        // console.log(response.data);
-        setSuccess(response.data);
-        navigate("/userJobs");
-      })
-      .catch((err) => {
-        setError(err.response.data);
-        console.log(err.response.data);
-      });
-  };
+  //   console.log("delete");
+  //   reqInstance
+  //     .delete(`/api/jobs/delete/${params.id}`, { token })
+  //     .then((response) => {
+  //       // console.log(response.data);
+  //       setSuccess(response.data);
+  //       navigate("/userJobs");
+  //     })
+  //     .catch((err) => {
+  //       setError(err.response.data);
+  //       console.log(err.response.data);
+  //     });
+  // };
   const handleApply = (e) => {
     e.preventDefault();
     setApply(true);
@@ -129,6 +144,7 @@ const JobPage = () => {
         console.log(err);
         setError("Some error has occurred");
       });
+    setComments("");
   };
 
   return (
@@ -140,7 +156,7 @@ const JobPage = () => {
         <div className="flex flex-col lg:flex-row items-center justify-around">
           <div className="flex">
             <div className="bg-gray-300 p-2 mx-4">
-              <span className="material-symbols-outlined text-6xl">work</span>
+              <MdWorkOutline className="text-5xl" />
             </div>
             <div className="mx-4">
               <h2 className="text-2xl">{job.jobName}</h2>
@@ -157,9 +173,9 @@ const JobPage = () => {
             <Link to={`/update/${job._id}`}>
               <button className="button">Update</button>
             </Link>
-            <button className="button !bg-red-500" onClick={handleDelete}>
+            {/* <button className="button !bg-red-500" onClick={handleDelete}>
               Delete
-            </button>
+            </button> */}
           </div>
         ) : userType !== "farmer" && user?.email ? (
           check === false ? (
@@ -179,9 +195,7 @@ const JobPage = () => {
         <div className="bg-[#fafafa] lg:w-[40%] w-[85%] px-5 py-2">
           <h1 className="m-1 font-bold text-xl text-gray-400">Overview</h1>
           <div className="flex items-center my-2">
-            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-              calendar_month
-            </span>
+            <MdOutlineCalendarToday className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
             <div className="flex flex-col">
               <span className="text-gray-500">Date Posted</span>{" "}
               <time>
@@ -191,18 +205,14 @@ const JobPage = () => {
             </div>
           </div>
           <div className="flex items-center my-2">
-            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-              filter_list
-            </span>
+            <MdFilterAlt className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
             <div className="flex flex-col">
               <span className="text-gray-500">Status </span>
               <span>{job.status}</span>
             </div>
           </div>
           <div className="flex items-center my-2">
-            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-              work
-            </span>
+            <MdOutlineWorkOutline className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
             <div className="flex flex-col">
               <span className="text-gray-500">For </span>
               <span>
@@ -213,21 +223,26 @@ const JobPage = () => {
             </div>
           </div>
           <div className="flex items-center my-2">
-            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-              timer
-            </span>
+            <MdTimer className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
             <div className="flex flex-col">
               <span className="text-gray-500">Completion Days </span>
               <span>{job.completionDays} days</span>
             </div>
           </div>
           <div className="flex items-center my-2">
-            <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-              landscape
-            </span>
+            <MdLandscape className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
             <div className="flex flex-col">
               <span className="text-gray-500">Land </span>
               <span>{job.land} acres</span>
+            </div>
+          </div>
+          <div className="flex items-center my-2">
+            <MdOutlineHome className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
+            <div className="flex flex-col">
+              <span className="text-gray-500">State </span>
+              <span>
+                {job.state}, <span>{job.city}</span>
+              </span>
             </div>
           </div>
 
@@ -238,9 +253,7 @@ const JobPage = () => {
               rel="noreferrer"
               className="flex items-center hover:scale-105 ease-in-out duration-300"
             >
-              <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-                location_on
-              </span>
+              <MdOutlineLocationOn className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
               <div className="flex flex-col">
                 <span className="text-gray-500">Maps </span>
                 <span>See Location</span>
@@ -254,9 +267,7 @@ const JobPage = () => {
                 href={`tel:${user?.phoneNumber}`}
                 className="flex items-center hover:scale-105 ease-in-out duration-300"
               >
-                <span className="material-symbols-outlined mr-2 text-4xl p-2 bg-[#e1f1e8]">
-                  call
-                </span>
+                <MdCall className="mr-2 text-5xl p-2 bg-[#e1f1e8]" />
                 <div className="flex flex-col">
                   <span className="text-gray-500">Phone Number </span>
                   <span>{user?.phoneNumber}</span>
@@ -273,7 +284,7 @@ const JobPage = () => {
       </div>
       <div className="w-[95%] mx-auto flex lg:flex-row flex-col gap-2">
         {job?.pictures?.map((picture, idx) => {
-          console.log(picture);
+          // console.log(picture);
           return (
             <div key={idx} className="overflow-auto">
               <img src={picture} alt="" className="object-cover" />
@@ -282,27 +293,28 @@ const JobPage = () => {
         })}
       </div>
       {job.farmerId === user?.email ? (
-        <div className="!w-[50%] mx-auto">
+        <div className="lg:w-[50%] w-full mx-auto">
           <div className="flex-col justify-around ml-2 mt-10 bg-[#fafafa] ">
             <div className="px-5 py-2 flex items-center gap-1">
-              <span className="material-symbols-outlined">thumbs_up_down</span>
+              <MdOutlineThumbsUpDown className="text-3xl" />
               <h1 className="m-1 font-bold text-xl text-gray-400">
                 Interested
               </h1>
             </div>
 
-            <div className="mx-2">
+            <div className="mx-2 ">
               {job.interested?.map((interest, idx) => {
                 // console.log(interest);
                 return (
-                  <div key={idx} className="flex gap-2 items-center">
-                    <div className="border-r px-2">
+                  <div
+                    key={idx}
+                    className="flex gap-2 items-center md:flex-row flex-col border-b-2 pb-2"
+                  >
+                    <div className="border-r px-2 hidden md:block">
                       <h1>{idx + 1}.</h1>
                     </div>
                     <div className="flex gap-2 items-center">
-                      <span className="material-symbols-outlined p-2">
-                        group_add
-                      </span>
+                      <MdOutlineGroupAdd className="text-3xl" />
                       <h1>{interest.id}</h1>
                     </div>
                     <div className="flex gap-2">
@@ -339,25 +351,23 @@ const JobPage = () => {
 
         <div className="flex justify-center items-center w-screen h-screen">
           <div className="w-[85%] h-[85%] flex-col items-center justify-center bg-white rounded-md">
-            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto w-[60%]">
-              <span className="material-symbols-outlined mr-4 ml-2">badge</span>
+            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto md:w-[60%] w-[95%]">
+              <MdOutlineBadge className="mr-4 ml-2 text-3xl" />
               <span className="text-gray-400">
                 User Email:{" "}
                 <span className="text-black mx-2">{user?.email}</span>
               </span>
             </div>
-            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto w-[60%]">
-              <span className="material-symbols-outlined mr-4 ml-2">badge</span>
+            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto md:w-[60%] w-[95%]">
+              <MdOutlineBadge className="mr-4 ml-2 text-3xl" />
               <span className="text-gray-400">
                 Job name:{" "}
                 <span className="text-black mx-2">{job?.jobName}</span>
               </span>
             </div>
 
-            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto w-[60%]">
-              <span className="material-symbols-outlined mr-4 ml-2">
-                description
-              </span>
+            <div className="border flex items-center p-2 mt-4 rounded-md mx-auto md:w-[60%] w-[95%]">
+              <MdOutlineDescription className="mr-4 ml-2 text-3xl" />
               <textarea
                 className="w-full outline-none h-24 resize-y"
                 placeholder="Comments - (minimum 100 words)"

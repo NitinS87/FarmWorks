@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import reqInstance from "../api";
 import { UserContext } from "../context/UserContext";
-
+import { MdWorkOutline } from "react-icons/md";
 const AppliedJobs = () => {
   const { userType, user } = useContext(UserContext);
   console.log(user);
@@ -26,21 +26,22 @@ const AppliedJobs = () => {
       <div className="grid lg:grid-cols-2 grid-cols-1  gap-8">
         {jobs?.map((job, jobIdx) => (
           <div
-            className="lg:h-[100px] h-full mx-auto flex flex-col lg:flex-row justify-evenly items-center border-l-4 border-l-[#5FBC7C] border px-8 gap-10"
+            className="lg:h-[100px] h-full mx-auto flex flex-col lg:flex-row justify-evenly items-center border-l-4 border-l-[#5FBC7C] border px-8 gap-10 my-2"
             key={jobIdx}
           >
             <div className="bg-gray-300 p-2">
-              <span className="material-symbols-outlined">work</span>
+              <MdWorkOutline className="text-4xl" />
             </div>
-            <div className="h-[70%] my-auto flex-col">
-              <div className="mb-3 text-xl">
+            <div className="flex-col items-center">
+              <span className="text-gray-300">Comments</span>
+              <div className="text-xl">
                 {job.comments.length > 15
                   ? job.comments.slice(0, 15) + "..."
                   : job.comments}
               </div>
             </div>
             <div>
-              <div className="mt-4 rounded-md">
+              <div className="mt-4 lg:m-0 rounded-md">
                 <Link to={`/jobs/${job.jobId}`}>
                   <button className="bg-[#52c075] p-2 text-white hover:scale-105 hover:text-black duration-300 ease-in-out">
                     View Details

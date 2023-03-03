@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import { MdLockOutline, MdMailOutline, MdPersonOutline } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import HeroBanner from "./HeroBanner";
@@ -15,29 +16,30 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (type !== "") {
+      axios
+        .post(`/api/${type}/login`, {
+          email: email,
+          password: password,
+        })
+        .then((d) => {
+          console.log(d.data);
+          // setUser(d.data.user);
+          setUser(d.data.user);
+          setUserType(type);
+          localStorage.removeItem("Authorization");
+          localStorage.setItem("Authorization", d.data.token);
+          // localStorage.setItem("User", JSON.stringify(d.data.user));
+          // localStorage.setItem("Type", JSON.stringify(d.data.type));
+          navigate("/");
+        })
+        .catch((err) => {
+          setError(err.response.data);
+          console.log(err.response.data);
+        });
+    }
 
     // console.log(email, password, type);
-
-    axios
-      .post(`/api/${type}/login`, {
-        email: email,
-        password: password,
-      })
-      .then((d) => {
-        console.log(d.data);
-        // setUser(d.data.user);
-        setUser(d.data.user);
-        setUserType(type);
-        localStorage.removeItem("Authorization");
-        localStorage.setItem("Authorization", d.data.token);
-        // localStorage.setItem("User", JSON.stringify(d.data.user));
-        // localStorage.setItem("Type", JSON.stringify(d.data.type));
-        navigate("/");
-      })
-      .catch((err) => {
-        setError(err.response.data);
-        console.log(err.response.data);
-      });
   };
 
   // console.log(user);
@@ -55,7 +57,9 @@ const Login = () => {
 
             {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
             <div className="border flex items-center p-2 mt-4 rounded-md">
-              <span className="material-symbols-outlined mr-4 ml-2">mail</span>
+              <span className="mr-4 ml-2">
+                <MdMailOutline className="text-3xl" />
+              </span>
               <span className=""></span>
               <input
                 className="w-[100%] outline-none"
@@ -70,8 +74,8 @@ const Login = () => {
             </div>
 
             <div className="border flex items-center p-2 mt-4 rounded-md">
-              <span className="material-symbols-outlined mr-4 ml-2">
-                <span className="material-symbols-outlined"> lock_open </span>
+              <span className="mr-4 ml-2">
+                <MdLockOutline className="text-3xl" />
               </span>
               <span className=""></span>
               <input
@@ -88,7 +92,9 @@ const Login = () => {
             </div>
 
             <div className="border flex items-center p-2 mt-4">
-              <span className="material-symbols-outlined mx-2">person</span>
+              <span className="material-symbols-outlined mx-2">
+                <MdPersonOutline className="text-3xl" />
+              </span>
               <span className="flex justify-start w-full">
                 <select
                   defaultValue={"DEFAULT"}

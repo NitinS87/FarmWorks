@@ -4,7 +4,17 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import reqInstance from "./../api";
 import LoadingScreen from "./LoadingScreen/LoadingScreen";
-
+import { State, City } from "country-state-city";
+import {
+  MdOutlineAvTimer,
+  MdOutlineBadge,
+  MdOutlineDescription,
+  MdOutlineHome,
+  MdOutlineLandscape,
+  MdOutlineLocationOn,
+  MdOutlinePriceCheck,
+  MdPersonOutline,
+} from "react-icons/md";
 const CreateJob = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -18,6 +28,14 @@ const CreateJob = () => {
   const [coordinates, setCoordinates] = useState("");
   const [jobOptions, setJobOptions] = useState("");
   const [images, setImages] = useState([]);
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+
+  const states = State.getStatesOfCountry("IN");
+  // console.log(states);
+  const cities = City.getCitiesOfState("IN", state);
+  // console.log(cities);
+
   //   const [latitude, setLatitude] = useState("");
   //   const [longitude, setLongitude] = useState("");
 
@@ -123,7 +141,9 @@ const CreateJob = () => {
     //   amount,
     //   coordinates,
     //   jobOptions,
-    //   images
+    //   images,
+    //   city,
+    //   state
     // );
 
     // console.log(user);
@@ -139,6 +159,8 @@ const CreateJob = () => {
         jobOptions: jobOptions,
         phoneNumber: user.phoneNumber,
         pictures: images,
+        state: state,
+        city: city,
       })
       .then((d) => {
         console.log(d.data);
@@ -173,9 +195,7 @@ const CreateJob = () => {
 
                 {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
                 <div className="border flex items-center p-2 mt-4 rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    badge
-                  </span>
+                  <MdOutlineBadge className="text-3xl mr-4 ml-2" />
                   <input
                     className="w-[100%] outline-none"
                     type="text"
@@ -187,9 +207,7 @@ const CreateJob = () => {
                 </div>
 
                 <div className="border flex items-center p-2 mt-4 rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    description
-                  </span>
+                  <MdOutlineDescription className="text-3xl mr-4 ml-2" />
                   <textarea
                     className="w-[100%] outline-none h-24 resize-y"
                     placeholder="Description 
@@ -202,9 +220,7 @@ Food details"
                 </div>
 
                 <div className="border flex items-center p-2 mt-4 rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    <span className="material-symbols-outlined"> update </span>
-                  </span>
+                  <MdOutlineAvTimer className="text-3xl mr-4 ml-2" />
                   <input
                     className="w-full outline-none"
                     type="number"
@@ -220,12 +236,7 @@ Food details"
                 </div>
 
                 <div className="border flex items-center p-2 mt-4 focus:border rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    <span className="material-symbols-outlined">
-                      {" "}
-                      landscape{" "}
-                    </span>
-                  </span>
+                  <MdOutlineLandscape className="text-3xl mr-4 ml-2" />
                   <div className=" w-full flex justify-evenly items-center gap-5">
                     <input
                       className="w-[60%] h-full outline-none"
@@ -238,14 +249,55 @@ Food details"
                     <span className="w-[40%]">acres</span>
                   </div>
                 </div>
-
-                <div className="border flex items-center p-2 mt-4 focus:border rounded-md">
-                  <span className="material-symbols-outlined mr-4 ml-2">
-                    <span className="material-symbols-outlined">
-                      {" "}
-                      payments{" "}
+                <div className="border flex items-center p-2 mt-4">
+                  <span className="flex mr-4 items-center w-1/2">
+                    <MdOutlineHome className="text-3xl mr-4 ml-2" />
+                    <span className="flex justify-start w-full">
+                      <select
+                        className="border outline-none p-2 w-full"
+                        id="state"
+                        name="location"
+                        value={state}
+                        required
+                        onChange={(e) => setState(e.target.value)}
+                      >
+                        <option className="mx-auto w-11" value="select">
+                          State
+                        </option>
+                        {states.map((d, idx) => (
+                          <option key={idx} value={d.isoCode}>
+                            {d.name}
+                          </option>
+                        ))}
+                      </select>
                     </span>
                   </span>
+
+                  <span className="flex items-center w-1/2">
+                    <MdOutlineHome className="text-3xl mr-4 ml-2" />
+                    <span className="flex justify-start w-full">
+                      <select
+                        className="border outline-none p-2 w-full"
+                        name="location"
+                        value={city}
+                        required
+                        onChange={(e) => setCity(e.target.value)}
+                      >
+                        <option className="mx-auto w-11" value="select">
+                          City
+                        </option>
+                        {cities.map((d, idx) => (
+                          <option key={idx} value={d.isoCode}>
+                            {d.name}
+                          </option>
+                        ))}
+                      </select>
+                    </span>
+                  </span>
+                </div>
+
+                <div className="border flex items-center p-2 mt-4 focus:border rounded-md">
+                  <MdOutlinePriceCheck className="text-3xl mr-4 ml-2" />
                   <input
                     className="w-full h-full outline-none"
                     type="number"
@@ -313,10 +365,7 @@ Food details"
                   </span>
                   <div className="border flex items-center p-2 mt-4">
                     <span className="flex mr-4 items-center w-1/2">
-                      <span className="material-symbols-outlined mx-2">
-                        {" "}
-                        home{" "}
-                      </span>
+                      <MdOutlineHome className="text-3xl mx-2" />
                       <span className="flex justify-start w-full">
                         <input
                           className="w-full h-full outline-none border p-2"
@@ -330,10 +379,7 @@ Food details"
                     </span>
 
                     <span className="flex items-center w-1/2">
-                      <span className="material-symbols-outlined mx-2">
-                        {" "}
-                        home{" "}
-                      </span>
+                      <MdOutlineHome className="text-3xl mx-2" />
                       <span className="flex justify-start w-full">
                         <input
                           className="w-full h-full outline-none border p-2"
@@ -345,14 +391,16 @@ Food details"
                         />
                       </span>
                     </span>
-                    <span className="material-symbols-outlined p-2 border mx-2">
-                      location_on
-                    </span>
+                    <div className="p-1 border text-3xl mx-2">
+                      <MdOutlineLocationOn />
+                    </div>
                   </div>
                 </div>
 
                 <div className="border flex items-center p-2 mt-4">
-                  <span className="material-symbols-outlined mx-2">person</span>
+                  <span className="mx-2 text-3xl">
+                    <MdPersonOutline/>
+                  </span>
                   <span className="flex justify-start w-full">
                     <select
                       defaultValue={"DEFAULT"}

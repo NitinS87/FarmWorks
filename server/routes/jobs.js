@@ -31,6 +31,8 @@ router.post("/create", verifyToken, async (req, res) => {
     jobOptions: req.body.jobOptions,
     phoneNumber: req.body.phoneNumber,
     pictures: req.body.pictures,
+    state: req.body.state,
+    city: req.body.city,
   });
 
   try {
@@ -73,6 +75,35 @@ router.get("/find/:farmerId", verifyToken, async (req, res) => {
 router.get("/search/:id", async (req, res) => {
   try {
     const jobs = await Jobs.findById(req.params.id);
+    if (!jobs) {
+      res.status(202).json("Job does not exist");
+    } else {
+      res.status(200).json(jobs);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET A SPECIFIC LOCATION JOB
+router.post("/searchFilter", async (req, res) => {
+  const state = req.body.state;
+  const city = req.body.city;
+  try {
+    var jobs = {};
+    if (state === "") {
+      jobs = await Jobs.find();
+      // res.status(200).json(jobs);
+    } else if (city === "") {
+      jobs = await Jobs.find({ state: state });
+      // res.status(200).json(jobs);
+    } else {
+      jobs = await Jobs.find({
+        state: state,
+        city: city,
+      });
+      // console.log(jobs);
+    }
     if (!jobs) {
       res.status(202).json("Job does not exist");
     } else {

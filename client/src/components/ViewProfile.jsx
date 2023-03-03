@@ -3,6 +3,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import profilePic from "../assets/profile.jpg";
 import tractor from "../assets/tractor.jpg";
+import {
+  MdCall,
+  MdOutlineBadge,
+  MdOutlineHome,
+  MdOutlineMailOutline,
+} from "react-icons/md";
+import { FiDatabase } from "react-icons/fi";
+
 const ViewProfile = () => {
   const params = useParams();
   const [user, setUser] = useState({});
@@ -33,42 +41,62 @@ const ViewProfile = () => {
             <div className="z-[-1] rounded-lg absolute w-[70%] h-[70%] bg-gray-700/[0.4]"></div>
           </div>
         </div>
-        <img
-          src={profilePic}
-          className="border-white border-[1px] mx-auto rounded-full shadow-xl w-[30%]"
-          alt=""
-        />
+        {user?.profile ? (
+          <img
+            src={user?.profile}
+            className="border-white border-[1px] mx-auto rounded-full shadow-xl w-[30%]"
+            alt="your photos"
+          />
+        ) : (
+          <img
+            src={profilePic}
+            className="border-white border-[1px] mx-auto rounded-full shadow-xl w-[30%]"
+            alt="default"
+          />
+        )}
       </div>
       <div className="flex-col gap-10 mx-auto lg:w-[70%] w-[95%]">
         <div className="border flex items-center p-2 mt-4 rounded-md">
-          <span className="material-symbols-outlined mx-2">badge</span>
+          <MdOutlineBadge className="text-3xl mx-2" />
           <span className="mr-3">Name: </span>
           <span>{user?.name}</span>
         </div>
         <div className="border flex items-center p-2 mt-4 rounded-md">
-          <span className="material-symbols-outlined mx-2">mail</span>
+          <span className="mx-2">
+            <MdOutlineMailOutline className="text-2xl" />
+          </span>
           <span className="mr-3">Email: </span>
           <span>{user?.email}</span>
         </div>
-        <div className="border flex items-center p-2 mt-4 rounded-md">
-          <div className="flex items-center border p-2 rounded-md w-[45%] mr-2">
-            <span className="material-symbols-outlined mx-2"> home </span>
+        <div className="border flex items-center p-2 mt-4 rounded-md md:flex-row flex-col">
+          <div className="flex items-center border p-2 rounded-md w-full md:w-[45%] lg:mr-2 mb-2 lg:mb-0">
+            <span className="mx-2">
+              <MdOutlineHome className="text-3xl" />
+            </span>
             <span className="mr-3">State: </span>
             <span>{user?.state}</span>
           </div>
-          <div className="flex items-center border p-2 rounded-md w-[45%]">
-            <span className="material-symbols-outlined mx-2"> home </span>
+          <div className="flex items-center border p-2 rounded-md w-full md:w-[45%]">
+            <span className="material-symbols-outlined mx-2">
+              {" "}
+              <MdOutlineHome className="text-3xl" />{" "}
+            </span>
             <span className="mr-3">City: </span>
             <span>{user?.city}</span>
           </div>
         </div>
         <div className="border flex items-center p-2 mt-4 rounded-md">
-          <span className="material-symbols-outlined mx-2">demography</span>
+          <span className="material-symbols-outlined mx-2">
+            <FiDatabase className="text-3xl" />
+          </span>
           <span className="mr-3">Aadhar Number: </span>
           <span>{user?.aadharNumber}</span>
         </div>
         <div className="border flex items-center p-2 mt-4 rounded-md">
-          <span className="material-symbols-outlined mx-2"> call </span>
+          <span className="mx-2">
+            {" "}
+            <MdCall className="text-3xl" />{" "}
+          </span>
           <span className="mr-3">Phone Number: </span>
           <span>{user?.phoneNumber}</span>
         </div>

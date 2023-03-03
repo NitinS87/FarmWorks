@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../assets/logo.jpg";
+import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 const Footer = () => {
   return (
     <div className="bg-[#282828] mt-5">
@@ -87,18 +88,18 @@ const Footer = () => {
           <div className="text-[#73817E]">
             © 2023 FarmWorks. All Rights Reserved.
           </div>
-          <div className="text-white text-[23px] flex gap-7 relative ">
+          <div className="text-white text-[23px] flex gap-7 relative my-2">
             <a href="#">
-              <i className="fa-brands fa-twitter hover:text-green-500"></i>
+              <FaTwitter className="hover:text-green-500" />
             </a>
             <a href="#">
-              <i className="fa-brands fa-instagram hover:text-green-500"></i>
+              <FaInstagram className="hover:text-green-500" />
             </a>
             <a href="#">
-              <i className="fa-brands fa-square-facebook hover:text-green-500"></i>
+              <FaFacebookF className="hover:text-green-500" />
             </a>
             <a href="#">
-              <i className="fa-brands fa-youtube hover:text-green-500"></i>
+              <FaYoutube className="hover:text-green-500" />
             </a>
           </div>
         </div>

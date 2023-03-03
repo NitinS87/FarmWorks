@@ -2,6 +2,14 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import { UserContext } from "../context/UserContext";
+import {
+  MdClose,
+  MdEdit,
+  MdOutlineAccountCircle,
+  MdOutlineMapsHomeWork,
+  MdOutlineMenu,
+  MdWorkOutline,
+} from "react-icons/md";
 const Navbar = () => {
   const { user, userType } = useContext(UserContext);
   const [nav, setNav] = useState(false);
@@ -78,8 +86,8 @@ const Navbar = () => {
               to="/account"
               className="mr-1 flex items-center justify-evenly"
             >
-              <span className="material-symbols-outlined text-2xl lg:text-4xl p-1 rounded-full">
-                account_circle
+              <span className="text-2xl lg:text-4xl p-1 rounded-full">
+                <MdOutlineAccountCircle />
               </span>
               <span className="text-base">{user.name}</span>
             </Link>
@@ -104,9 +112,9 @@ const Navbar = () => {
           className="block md:hidden cursor-pointer z-10 mt-6"
         >
           {nav ? (
-            <span className="material-symbols-outlined">close</span>
+            <MdClose className="text-3xl" />
           ) : (
-            <span className="material-symbols-outlined">menu</span>
+            <MdOutlineMenu className="text-3xl" />
           )}
         </div>
         {/* Mobile Menu */}
@@ -126,9 +134,7 @@ const Navbar = () => {
                     className="hover:text-[#5FBC7C] text-xl font-medium flex mx-1 items-center"
                     onClick={handleNav}
                   >
-                    <span className="material-symbols-outlined mr-2">
-                      work_history
-                    </span>
+                    <MdOutlineMapsHomeWork className="mx-2" />
                     Applied Jobs
                   </Link>
                 </li>
@@ -138,8 +144,8 @@ const Navbar = () => {
                     className="hover:text-[#5FBC7C] text-xl font-medium flex mx-1 items-center"
                     onClick={handleNav}
                   >
-                    <span className="material-symbols-outlined mr-2">
-                      edit_note
+                    <span className="mr-2">
+                      <MdEdit className="text-3xl" />
                     </span>
                     Create a Job
                   </Link>
@@ -150,7 +156,9 @@ const Navbar = () => {
                     className="hover:text-[#5FBC7C] text-xl font-medium flex mx-1 items-center"
                     onClick={handleNav}
                   >
-                    <span className="material-symbols-outlined mr-2">work</span>
+                    <span className="material-symbols-outlined mr-2">
+                      <MdWorkOutline className="text-3xl" />
+                    </span>
                     Show my Jobs
                   </Link>
                 </li>
@@ -191,12 +199,12 @@ const Navbar = () => {
           <div className="flex flex-col w-full p-4">
             {user?.name ? null : (
               <>
-                <Link to="/signin" onClick={handleNav}>
+                <Link to="/login" onClick={handleNav}>
                   <button className="w-full my-2 p-3 button text-primary border border-secondary rounded-2xl shadow-xl">
                     Sign In
                   </button>
                 </Link>
-                <Link to="/signup" onClick={handleNav}>
+                <Link to="/register" onClick={handleNav}>
                   <button className="w-full my-2 p-3 button text-btnText rounded-2xl shadow-xl">
                     Sign Up
                   </button>

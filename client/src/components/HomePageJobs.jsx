@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import reqInstance from "../api";
+import { MdWorkOutline } from "react-icons/md";
 
 const HomePageJobs = ({ url }) => {
   // const { user, setUser } = useContext(LoginContext);
@@ -27,17 +28,17 @@ const HomePageJobs = ({ url }) => {
           >
             <div className="flex items-center gap-2">
               <div className="bg-gray-300 p-2">
-                <span className="material-symbols-outlined text-4xl">work</span>
+                <MdWorkOutline className="text-4xl" />
               </div>
               <div className="flex-col">
                 <div className="mb-3 text-xl">
-                  {job.jobName.length > 15
-                    ? job.jobName.slice(0, 15) + "..."
+                  {job.jobName.length > 10
+                    ? job.jobName.slice(0, 10) + "..."
                     : job.jobName}
                 </div>
                 <div className="text-[#C0C0C0]">
-                  {job.jobDesc.length > 20
-                    ? job.jobDesc.slice(0, 20) + "..."
+                  {job.jobDesc.length > 10
+                    ? job.jobDesc.slice(0, 10) + "..."
                     : job.jobDesc}
                 </div>
               </div>
