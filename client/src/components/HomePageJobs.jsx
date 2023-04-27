@@ -5,10 +5,13 @@ import { MdWorkOutline } from "react-icons/md";
 
 const HomePageJobs = ({ url }) => {
   // const { user, setUser } = useContext(LoginContext);
-  var [jobs, setJobs] = useState();
+  let [jobs, setJobs] = useState();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     reqInstance.get(url).then((response) => {
       setJobs(response.data);
+      setLoading(false);
       // console.log(response.data);
     });
   }, [url]);
@@ -17,6 +20,15 @@ const HomePageJobs = ({ url }) => {
   if (jobs?.length > 1) {
     jobs = jobs?.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
   }
+  if (loading === null)
+    return (
+      <div className="w-full h-full flex flex-col gap-2 justify-center items-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+        <div className="loader"></div>
+        <span className="text-xl text-center">
+          Getting jobs...
+        </span>
+      </div>
+    );
   return (
     <div className="w-[80%] relative mx-auto mb-16">
       <h1 className="text-3xl text-gray-500 p-2">Available Jobs</h1>

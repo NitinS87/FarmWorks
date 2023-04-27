@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { Suspense, useContext, useState } from "react";
 import { MdLockOutline, MdMailOutline, MdPersonOutline } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import HeroBanner from "./HeroBanner";
+import LoadingScreen from "./LoadingScreen/LoadingScreen";
+const HeroBanner = React.lazy(() => import("./HeroBanner"));
 
 const Login = () => {
   const { setUser, setUserType } = useContext(UserContext);
@@ -13,8 +14,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     if (type !== "") {
       axios
@@ -31,11 +34,13 @@ const Login = () => {
           localStorage.setItem("Authorization", d.data.token);
           // localStorage.setItem("User", JSON.stringify(d.data.user));
           // localStorage.setItem("Type", JSON.stringify(d.data.type));
+          setLoading(false);
           navigate("/");
         })
         .catch((err) => {
           setError(err.response.data);
           console.log(err.response.data);
+          setLoading(false);
         });
     }
 
@@ -65,7 +70,7 @@ const Login = () => {
                 className="w-[100%] outline-none"
                 type="email"
                 placeholder="E-mail"
-                autoComplete="current-email"
+                autoComplete="email"
                 name="email"
                 value={email}
                 required
@@ -123,9 +128,11 @@ const Login = () => {
               <button
                 className="button shadow-sm"
                 type="submit"
-                onSubmit={handleSubmit}
-              >
-                Login
+              >{loading ? (
+                <span className="loader"></span>
+              ) : (
+                <span>Login</span>
+              )}
               </button>
             </div>
           </div>
@@ -138,7 +145,7 @@ const Login = () => {
         </form>
       </div>
       <div className="hidden lg:block">
-        <HeroBanner />
+        <Suspense fallback={<LoadingScreen />}><HeroBanner /></Suspense>
       </div>
     </div>
   );

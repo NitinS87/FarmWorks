@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
           <div className="mt-4">
             <h4 className="font-bold">1.INTRODUCTION</h4>
 
-            <p className="mt-1">
+            <p className="mt-1  text-lg">
               The FarmWorks Jobs Site Terms of Use describe when and the
               conditions under which you are allowed to access or use the site.
               Please read these Site Terms of Use carefully before visiting our
@@ -30,7 +30,7 @@ const TermsAndConditions = () => {
               2.1 FarmWorks JOB’S PROVISION OF THE SITE AND LIMITED SITE LICENSE
             </h4>
 
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.1 discusses the rights we give to you to allow you to
               use the Site, as detailed below: As we describe in this Section
               2.1, FarmWorks Jobs grants you a limited license to access the
@@ -50,7 +50,7 @@ const TermsAndConditions = () => {
               2.2 TERMINATION OF THE LIMITED SITE LICENSE
             </h4>
 
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.2 explains that we can stop allowing you to use the
               Site, as detailed below: FarmWorks Jobs may terminate any license
               it has granted to any Site Visitor or User to access the Site and
@@ -64,7 +64,7 @@ const TermsAndConditions = () => {
             <h4 className="font-semibold">
               2.3 FarmWorks JOB’S INTELLECTUAL PROPERTY
             </h4>
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.3 explains that even though we let you use the Site, we
               still retain all our rights, as detailed below: FarmWorks Jobs and
               our licensors retain all right, title, and interest in and to all
@@ -84,7 +84,7 @@ const TermsAndConditions = () => {
               2.4.1 YOUR OBLIGATIONS AND YOUR INDEMNIFICATION OF FarmWorks JOBS
             </h4>
 
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.4.1 explains that you are solely responsible for your
               use of the Site and any content you post on the Site, and that if
               someone makes a claim against FarmWorks Jobs because of your
@@ -117,7 +117,7 @@ const TermsAndConditions = () => {
               VISITORS
             </h4>
 
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.4.2 explains that by posting content on the Site, you
               give others certain limited rights to that content, as detailed
               below: You retain all ownership rights in any User Content you
@@ -147,7 +147,7 @@ const TermsAndConditions = () => {
           <div className="mt-2">
             <h4 className="font-semibold">2.4.3 YOUR COMMENTS AND IDEAS</h4>
 
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.4.3 explains when you can and what happens if you send
               your ideas to FarmWorks Jobs, as detailed below: You may submit
               comments or ideas about the Site and Site Services, including
@@ -170,7 +170,7 @@ const TermsAndConditions = () => {
           <div className="mt-4">
             <h4 className="font-bold">2.5 THIRD-PARTY INTELLECTUAL PROPERTY</h4>
 
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.5 explains that third parties, including other Users,
               are responsible for content posted or linked on the Site, as
               detailed below: Any information or content expressed or made
@@ -198,7 +198,7 @@ const TermsAndConditions = () => {
               2.6 COMPLAINTS ABOUT COPYRIGHTED CONTENT ON THE SITE
             </h4>
 
-            <p className="mt-1">
+            <p className="mt-1 text-lg">
               Section 2.6 explains what to do if you think content on the Site
               infringes your rights, as detailed below: FarmWorks Jobs is
               committed to complying with India copyright and related laws and

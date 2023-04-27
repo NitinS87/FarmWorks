@@ -20,10 +20,10 @@ const Jobs = ({ url }) => {
       // console.log(response.data);
     });
   }, [url]);
-
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setLoading(true);
     await axios
       .post(`/api/jobs/searchFilter`, {
         state: state,
@@ -32,10 +32,12 @@ const Jobs = ({ url }) => {
       .then((d) => {
         console.log(d.data);
         setJobs(d.data);
+        setLoading(false);
       })
       .catch((err) => {
         setError("Some error has occured!");
         console.log(err.response.data);
+        setLoading(false);
       });
   };
   // console.log(user);
@@ -95,7 +97,11 @@ const Jobs = ({ url }) => {
             </span>
             <div className="flex items-center justify-start mx-4 rounded-md w-full">
               <button className="button shadow-sm" type="submit">
-                Filter
+                {loading ? (
+                  <span className="loader"></span>
+                ) : (
+                  <span>Filter</span>
+                )}
               </button>
             </div>
           </div>

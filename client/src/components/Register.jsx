@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import HeroBanner from "./HeroBanner";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { State, City } from "country-state-city";
@@ -15,6 +14,7 @@ import {
 import { FiDatabase } from "react-icons/fi";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { RiUploadCloud2Line } from "react-icons/ri";
+const HeroBanner = React.lazy(() => import("./HeroBanner"));
 
 const Register = () => {
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ const Register = () => {
   const states = State.getStatesOfCountry("IN");
   // console.log(states);
   const cities = City.getCitiesOfState("IN", state);
+  const [loading, setLoading] = useState(false);
   // console.log(cities);
   // console.log(city);
 
@@ -85,6 +86,7 @@ const Register = () => {
   );
 
   const handleSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     // console.log("clicked");
     // console.log(
@@ -111,11 +113,13 @@ const Register = () => {
       })
       .then((d) => {
         console.log(d.data);
+        setLoading(false);
         navigate("/login");
       })
       .catch((err) => {
         setError(err.response.data);
         console.log(err.response.data);
+        setLoading(false);
       });
   };
   return (
@@ -269,7 +273,7 @@ const Register = () => {
                   className="p-2 border rounded-md flex items-center"
                   onClick={submitImage}
                 >
-                  <RiUploadCloud2Line className="text-2xl"/>
+                  <RiUploadCloud2Line className="text-2xl" />
                   Upload
                 </button>
               </div>
@@ -331,11 +335,15 @@ const Register = () => {
 
             <div className="flex items-center justify-start mt-4 rounded-md">
               {accepts ? (
-                <button className="button shadow-sm">Register</button>
+                <button className="button shadow-sm" type="submit">{loading ? (
+                  <span className="loader"></span>
+                ) : (
+                  <span>Register</span>
+                )}</button>
               ) : (
                 <button
                   disabled={!accepts}
-                  className="button shadow-sm bg-gray-300"
+                  className="button shadow-sm bg-gray-300! text-gray-500!"
                 >
                   Register
                 </button>

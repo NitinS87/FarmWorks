@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import logo from "../assets/logo.jpg";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
@@ -9,6 +10,7 @@ const Footer = () => {
           <img
             className="relative w-[20%] lg:h-[5%] lg:w-[5%] ml-8 top-5"
             src={logo}
+            alt="FarmWorks"
           />
         </div>
         <div className="border mt-8 border-[#343434]"></div>

@@ -6,7 +6,6 @@ import {
   MdOutlineDescription,
   MdOutlineHome,
   MdOutlineLandscape,
-  MdOutlineLocationOn,
   MdOutlinePriceCheck,
   MdPersonOutline,
   MdFilterList,
@@ -51,7 +50,10 @@ const UpdateJob = () => {
     });
   });
 
+  const [loadingData, setLoadingData] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoadingData(true);
     axios.get(`/api/jobs/search/${params.id}`).then((response) => {
       setJobName(response.data.jobName);
       setJobDesc(response.data.jobDesc);
@@ -64,6 +66,7 @@ const UpdateJob = () => {
       setJob(response.data);
       setState(response.data.state);
       setCity(response.data.city);
+      setLoadingData(false);
     });
   }, [params.id]);
 
@@ -79,7 +82,7 @@ const UpdateJob = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setLoading(true);
     // console.log(
     //   jobName,
     //   jobDesc,
@@ -107,14 +110,24 @@ const UpdateJob = () => {
       })
       .then((d) => {
         console.log(d.data);
+        setLoading(false);
         navigate(`/jobs/${d.data._id}`);
       })
       .catch((err) => {
         setError(err.response.data);
+        setLoading(false);
         console.log(err.response.data);
       });
   };
-
+  if (loadingData === null)
+    return (
+      <div className="w-full h-full flex flex-col gap-2 justify-center items-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+        <div className="loader"></div>
+        <span className="text-xl text-center">
+          Getting Jobs...
+        </span>
+      </div>
+    );
   return (
     <div>
       {user.email ? (
@@ -331,7 +344,11 @@ const UpdateJob = () => {
 
                 <div className="flex items-center justify-start mt-4 rounded-md">
                   <button className="button shadow-sm" type="submit">
-                    Update
+                    {loading ? (
+                      <span className="loader"></span>
+                    ) : (
+                      <span>Update</span>
+                    )}
                   </button>
                 </div>
               </div>

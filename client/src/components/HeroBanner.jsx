@@ -64,7 +64,7 @@ function HeroBanner() {
       </div> */}
 
       <div className="flex top-4 justify-center py-2">
-        {slides.map((slide, slideIndex) => (
+        {slides.map((_slide, slideIndex) => (
           <div
             className="text-2xl cursor-pointer"
             key={slideIndex}

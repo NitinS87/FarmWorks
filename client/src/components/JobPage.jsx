@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import reqInstance from "./../api";
 import {
@@ -20,8 +21,6 @@ import {
 } from "react-icons/md";
 
 const JobPage = () => {
-  var token = localStorage.getItem("Authorization");
-  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const { user, userType } = useContext(UserContext);
@@ -34,6 +33,8 @@ const JobPage = () => {
 
   // console.log(params);
   const url = `/api/jobs/search/${params.id}`;
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     // async function fetchData() {
     //   // Here we are simulating a delay of 2 seconds to mimic data fetching.
@@ -42,6 +43,7 @@ const JobPage = () => {
     // }
     // fetchData();
 
+    setLoading(true);
     async function loadData() {
       try {
         axios.get(url).then((response) => {
@@ -55,9 +57,11 @@ const JobPage = () => {
           var email = user?.email;
           console.log(user);
           forLoop(jobData, email);
+          setLoading(false);
         });
       } catch (err) {
         console.log(err);
+        setLoading(false);
       }
     }
 
@@ -146,7 +150,15 @@ const JobPage = () => {
       });
     setComments("");
   };
-
+  if (loading === null)
+    return (
+      <div className="w-full h-full flex flex-col gap-2 justify-center items-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+        <div className="loader"></div>
+        <span className="text-xl text-center">
+          Getting job details...
+        </span>
+      </div>
+    );
   return (
     <div className="w-[85%] h-full relative mx-auto my-16">
       {/* Heading div */}

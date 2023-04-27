@@ -17,17 +17,31 @@ const ViewProfile = () => {
   const type = params.type;
   const email = params.profileId;
 
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`/profile/${type}/${email}`)
       .then((response) => {
         console.log(response.data);
         setUser(response.data.user);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err.response.data);
+        setLoading(false);
       });
   }, [email, type]);
+
+  if (loading === null)
+    return (
+      <div className="w-full h-full flex flex-col gap-2 justify-center items-center absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+        <div className="loader"></div>
+        <span className="text-xl text-center">
+          Getting your profile...
+        </span>
+      </div>
+    );
   return (
     <div className="lg:w-[75%] mx-auto h-full p-2 my-10 w-[85%]">
       <div className="h-[50%] md:h-[60%] relative">
@@ -36,7 +50,7 @@ const ViewProfile = () => {
             <img
               className="rounded-lg z-[-1] absolute w-[70%] h-[70%] object-cover"
               src={tractor}
-              alt=""
+              alt="tractor"
             />
             <div className="z-[-1] rounded-lg absolute w-[70%] h-[70%] bg-gray-700/[0.4]"></div>
           </div>
