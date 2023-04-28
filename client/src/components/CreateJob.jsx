@@ -15,6 +15,8 @@ import {
   MdOutlinePriceCheck,
   MdPersonOutline,
 } from "react-icons/md";
+import AWS from 'aws-sdk';
+
 const CreateJob = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -54,11 +56,90 @@ const CreateJob = () => {
   //   fetchData();
   //   console.log(user);
   // }, [user]);
-  const uploadAllToCloudinary = async (files, onUploadProgress) => {
+  // const uploadAllToCloudinary = async (files, onUploadProgress) => {
+  //   const uploadedImageUrls = [];
+  //   for (let i = 0; i < files.length; i++) {
+  //     try {
+  //       const url = await uploadToCloudinary(files[i], onUploadProgress);
+  //       uploadedImageUrls.push(url);
+  //     } catch (error) {
+  //       console.error("Error uploading file:", error);
+  //     }
+  //   }
+  //   return uploadedImageUrls;
+  // };
+  // const uploadToCloudinary = async (file, onUploadProgress) => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   const cloudName = "dgmcl4cdm";
+  //   const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+  //   formData.append("upload_preset", "nitindemo");
+  //   formData.append("folder", `farmworks/${user.email}`);
+
+  //   try {
+  //     const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData, {
+  //       onUploadProgress: (progressEvent) => {
+  //         const progress = Math.round(
+  //           (progressEvent.loaded * 100) / progressEvent.total
+  //         );
+  //         onUploadProgress(progress);
+  //       },
+  //     });
+  //     console.log("Files uploaded successfully:", response.data.secure_url);
+  //     return response.data.secure_url;
+  //   } catch (error) {
+  //     console.error("Error uploading files:", error);
+  //     throw error;
+  //   }
+  // };
+
+  // const handleFileUpload = async (event) => {
+  //   const files = event.target.files;
+  //   try {
+  //     // console.log(files);
+  //     const uploadedImageUrls = await uploadAllToCloudinary(files, setProgress);
+  //     // do something with the uploaded image URL
+  //     setImages(uploadedImageUrls);
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //   }
+  // };
+  // // console.log(images);
+
+
+
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    region: process.env.REACT_APP_AWS_REGION,
+    signatureVersion: 'v4', // Replace with your S3 region
+  });
+  // console.log(process.env.REACT_APP_AWS_ACCESS_KEY, process.env.REACT_APP_AWS_SECRET_ACCESS_KEY, process.env.REACT_APP_AWS_REGION, process.env.REACT_APP_AWS_BUCKET_NAME)
+  const uploadToS3 = async (file, onUploadProgress) => {
+    const params = {
+      Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
+      Key: `farmworks/${user.email}/${file.name}`,
+      Body: file,
+    };
+
+    try {
+      const response = await s3.upload(params).on('httpUploadProgress', (progressEvent) => {
+        const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        onUploadProgress(progress);
+      }).promise();
+      // console.log("File uploaded successfully:", response.Location);
+      // console.log(response.Location);
+      return response.Location;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setError("Some error occured! Please try again later.");
+    }
+  };
+  const uploadAllToS3 = async (files, onUploadProgress) => {
     const uploadedImageUrls = [];
     for (let i = 0; i < files.length; i++) {
       try {
-        const url = await uploadToCloudinary(files[i], onUploadProgress);
+        const url = await uploadToS3(files[i], onUploadProgress);
         uploadedImageUrls.push(url);
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -66,43 +147,16 @@ const CreateJob = () => {
     }
     return uploadedImageUrls;
   };
-  const uploadToCloudinary = async (file, onUploadProgress) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    const cloudName = "dgmcl4cdm";
-    const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-    formData.append("upload_preset", "nitindemo");
-    formData.append("folder", `farmworks/${user.email}`);
-
-    try {
-      const response = await axios.post(CLOUDINARY_UPLOAD_URL, formData, {
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          onUploadProgress(progress);
-        },
-      });
-      console.log("Files uploaded successfully:", response.data.secure_url);
-      return response.data.secure_url;
-    } catch (error) {
-      console.error("Error uploading files:", error);
-      throw error;
-    }
-  };
 
   const handleFileUpload = async (event) => {
     const files = event.target.files;
     try {
-      // console.log(files);
-      const uploadedImageUrls = await uploadAllToCloudinary(files, setProgress);
-      // do something with the uploaded image URL
+      const uploadedImageUrls = await uploadAllToS3(files, setProgress);
       setImages(uploadedImageUrls);
     } catch (error) {
       console.error("Error uploading file:", error);
     }
   };
-  // console.log(images);
 
   const ProgressBar = ({ progress }) => (
     <div className="progress">
