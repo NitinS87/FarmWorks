@@ -47,7 +47,7 @@ const Jobs = ({ url }) => {
   return (
     <div className="w-[80%] relative mx-auto mb-16">
       <div>
-        {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
+        {error ? <p className="bg-red-500 p-3 my-2 text-white rounded-lg">{error}</p> : null}
         <h1 className="text-3xl text-gray-500 p-2">Available Jobs</h1>
         <form onSubmit={handleSubmit} className="w-full">
           <div className="border flex md:flex-row flex-col items-center p-2 mt-4 justify-start">

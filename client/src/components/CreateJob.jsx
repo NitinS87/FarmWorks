@@ -245,7 +245,7 @@ const CreateJob = () => {
                 <h1 className="text-3xl mt-5">Create a Job</h1>
               </div>
 
-              {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
+              {error ? <p className="bg-red-500 p-3 my-2 text-white rounded-lg">{error}</p> : null}
               <div className="border flex items-center p-2 mt-4 rounded-md">
                 <MdOutlineBadge className="text-3xl mr-4 ml-2" />
                 <input

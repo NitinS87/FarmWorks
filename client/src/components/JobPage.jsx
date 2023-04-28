@@ -163,7 +163,7 @@ const JobPage = () => {
     <div className="w-[85%] h-full relative mx-auto my-16">
       {/* Heading div */}
       {success ? <p className="bg-green-500 p-3 my-2">{success}</p> : null}
-      {error ? <p className="bg-red-500 p-3 my-2">{error}</p> : null}
+      {error ? <p className="bg-red-500 p-3 my-2 text-white rounded-lg">{error}</p> : null}
       <div className="flex flex-col lg:flex-row shadow-md rounded-md p-5 justify-between items-center gap-3">
         <div className="flex flex-col lg:flex-row items-center justify-around">
           <div className="flex">
