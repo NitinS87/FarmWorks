@@ -14,7 +14,7 @@ function HeroBanner() {
     },
 
     {
-      url: "https://mb.com.ph/wp-content/uploads/2021/11/Main-photo-scaled.jpg",
+      url: "https://sc0.blr1.cdn.digitaloceanspaces.com/article/159143-fyoisazenw-1621239169.jpg",
       text: "The best farmhands are just a click away!",
     },
   ];
